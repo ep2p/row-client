@@ -1,4 +1,9 @@
-import model.RowRequest;
+package labs.psychogen.row.client;
+
+import labs.psychogen.row.client.callback.ResponseCallback;
+import labs.psychogen.row.client.callback.SubscriptionCallback;
+import labs.psychogen.row.client.callback.SubscriptionListener;
+import labs.psychogen.row.client.model.RowRequest;
 
 import java.util.List;
 
