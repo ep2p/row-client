@@ -1,6 +1,5 @@
-package labs.psychogen.row.client.model;
+package labs.psychogen.row.client.model.protocol;
 
-import labs.psychogen.row.client.model.protocol.RowResponseStatus;
 import lombok.*;
 
 import java.util.Map;
@@ -11,9 +10,9 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 @Data
-public class RowResponse<E> {
+public class ResponseDto {
     private String requestId;
-    private E body;
+    private Object body;
     private int status;
     private Map<String, String> headers;
 

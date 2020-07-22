@@ -1,4 +1,4 @@
-package labs.psychogen.row.client.model;
+package labs.psychogen.row.client.model.protocol;
 
 import lombok.Getter;
 
