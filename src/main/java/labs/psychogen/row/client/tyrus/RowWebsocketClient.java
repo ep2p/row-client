@@ -9,13 +9,10 @@ import labs.psychogen.row.client.ws.ContainerFactory;
 import labs.psychogen.row.client.ws.RowClientEndpointConfig;
 import labs.psychogen.row.client.ws.RowWebsocketHandlerAdapter;
 import labs.psychogen.row.client.ws.RowWebsocketSession;
-import org.springframework.web.socket.WebSocketSession;
+import lombok.SneakyThrows;
 
 import javax.annotation.PostConstruct;
-import javax.websocket.ClientEndpointConfig;
-import javax.websocket.Endpoint;
-import javax.websocket.Extension;
-import javax.websocket.WebSocketContainer;
+import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -24,11 +21,12 @@ import static labs.psychogen.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME;
 
 public class RowWebsocketClient implements RowClient, ConnectionProvider {
     private final RequestSender requestSender;
-    private final RowConfig rowConfig;
+    private final RowContainer rowContainer;
+    private volatile RowWebsocketSession webSocketSession;
 
-    public RowWebsocketClient(RowConfig rowConfig) {
-        this.requestSender = new RequestSender(this, rowConfig.getMessageIdGenerator(), rowConfig.getCallbackRegistry(), rowConfig.getSubscriptionListenerRegistry());
-        this.rowConfig = rowConfig;
+    public RowWebsocketClient(RowContainer rowContainer) {
+        this.requestSender = new RequestSender(this, rowContainer.getMessageIdGenerator(), rowContainer.getCallbackRegistry(), rowContainer.getSubscriptionListenerRegistry());
+        this.rowContainer = rowContainer;
     }
 
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
@@ -40,17 +38,41 @@ public class RowWebsocketClient implements RowClient, ConnectionProvider {
     }
 
     @PostConstruct
-    public void init() {
-        WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowConfig.getWebsocketConfig());
-        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowConfig.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
-        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowConfig.getAttributes(), URI.create(rowConfig.getAddress()), rowConfig.getWebsocketConfig()), null);
+    public void open() {
+        WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowContainer.getWebsocketConfig());
+        URI uri = URI.create(rowContainer.getAddress());
+        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowContainer.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
+        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowContainer.getAttributes(), uri, rowContainer.getWebsocketConfig()), new RowMessageHandler(new RowMessageHandler.Listener() {
+            public void onOpen(RowWebsocketSession rowWebsocketSession) {
+                setWebSocketSession(rowWebsocketSession);
+            }
+
+            public void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
+
+            }
+        }, rowContainer.getCallbackRegistry(), rowContainer.getSubscriptionListenerRegistry()));
+        try {
+            webSocketContainer.connectToServer(endpoint, clientEndpointConfig, uri);
+        } catch (DeploymentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void close() {
-
+    @SneakyThrows
+    public synchronized void close() {
+        if (this.webSocketSession != null) {
+            this.webSocketSession.close();
+            this.webSocketSession = null;
+        }
     }
 
-    public WebSocketSession getSession() {
-        return null;
+    public RowWebsocketSession getSession() {
+        return webSocketSession;
+    }
+
+    private void setWebSocketSession(RowWebsocketSession webSocketSession){
+        this.webSocketSession = webSocketSession;
     }
 }

@@ -1,7 +1,5 @@
 package labs.psychogen.row.client.ws;
 
-import org.springframework.web.socket.CloseStatus;
-
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
 import java.io.IOException;
@@ -61,7 +59,7 @@ public class RowWebsocketSession extends AbstractWebsocketSession<Session> {
         ((Session)this.getNativeSession()).getBasicRemote().sendPong(byteBuffer == null ? ByteBuffer.allocate(0) : byteBuffer);
     }
 
-    public void closeInternal(CloseStatus status) throws IOException {
-        ((Session)this.getNativeSession()).close(new CloseReason(CloseReason.CloseCodes.getCloseCode(status.getCode()), status.getReason()));
+    public void closeInternal(CloseReason closeReason) throws IOException {
+        ((Session)this.getNativeSession()).close(closeReason);
     }
 }

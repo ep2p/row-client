@@ -19,7 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RowConfig {
+public class RowContainer {
     private WebsocketConfig websocketConfig;
     private String address;
     @Builder.Default
@@ -31,5 +31,5 @@ public class RowConfig {
     @Builder.Default
     private MessageIdGenerator messageIdGenerator = new UUIDMessageIdGenerator();
     @Builder.Default
-    private Map<String, Object> attributes = new HashMap<>();
+    private Map<String, Object> attributes = new HashMap<String, Object>();
 }
