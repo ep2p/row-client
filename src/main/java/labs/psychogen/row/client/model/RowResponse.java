@@ -16,6 +16,7 @@ public class RowResponse<E> {
     private String requestId;
     private E body;
     private int status;
+    @Builder.Default
     private Map<String, String> headers = new HashMap<String, String>();
 
     public void setStatus(RowResponseStatus status) {

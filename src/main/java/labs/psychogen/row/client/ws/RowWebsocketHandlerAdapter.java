@@ -2,8 +2,6 @@ package labs.psychogen.row.client.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.websocket.*;
 import java.nio.ByteBuffer;
@@ -49,19 +47,5 @@ public class RowWebsocketHandlerAdapter extends Endpoint {
 
     private void handlePongMessage(Session session, ByteBuffer payload) {
         messageHandler.onPong(this.rowWebsocketSession, payload);
-    }
-
-    private static void tryCloseWithError(WebSocketSession session, Throwable exception, Log logger) {
-        if (logger.isErrorEnabled()) {
-            logger.error("Closing session due to exception for " + session, exception);
-        }
-
-        if (session.isOpen()) {
-            try {
-                session.close(CloseStatus.SERVER_ERROR);
-            } catch (Throwable var4) {
-            }
-        }
-
     }
 }

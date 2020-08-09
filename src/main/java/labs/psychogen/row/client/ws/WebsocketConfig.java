@@ -4,7 +4,6 @@ import lombok.*;
 
 @Builder
 @Data
-@NoArgsConstructor
 @ToString
 public class WebsocketConfig {
     private long asyncSendTimeout;

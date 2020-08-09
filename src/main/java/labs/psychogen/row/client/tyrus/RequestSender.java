@@ -13,7 +13,6 @@ import labs.psychogen.row.client.model.protocol.RequestDto;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
 import lombok.SneakyThrows;
-import org.springframework.web.socket.TextMessage;
 
 import java.io.IOException;
 
@@ -64,7 +63,7 @@ public class RequestSender {
         String json = getJson(messageId, rowRequest);
         try {
             callbackRegistry.registerCallback(messageId, callback);
-            connectionProvider.getSession().sendMessage(new TextMessage(json));
+            connectionProvider.getSession().sendTextMessage(json);
         }catch (RuntimeException e){
             callbackRegistry.unregisterCallback(messageId);
             throw e;

@@ -1,7 +1,5 @@
 package labs.psychogen.row.client.ws;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 import java.util.Map;
 
@@ -14,12 +12,11 @@ public class AbstractWebsocketSession<T> implements NativeWebsocketSession {
     }
 
     public T getNativeSession() {
-        Assert.state(this.nativeSession != null, "WebSocket session not yet initialized");
+        assert this.nativeSession != null;
         return this.nativeSession;
     }
 
-    @Nullable
-    public <R> R getNativeSession(@Nullable Class<R> requiredType) {
+    public <R> R getNativeSession(Class<R> requiredType) {
         return requiredType != null && !requiredType.isInstance(this.nativeSession) ? null : (R) this.nativeSession;
     }
 
