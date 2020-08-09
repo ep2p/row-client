@@ -1,7 +1,7 @@
 package labs.psychogen.row.client.tyrus;
 
-import javax.websocket.Session;
+import org.springframework.web.socket.WebSocketSession;
 
 public interface ConnectionProvider {
-    Session getSession();
+    WebSocketSession getSession();
 }

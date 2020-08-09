@@ -13,6 +13,9 @@ import labs.psychogen.row.client.model.protocol.RequestDto;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
 import lombok.SneakyThrows;
+import org.springframework.web.socket.TextMessage;
+
+import java.io.IOException;
 
 public class RequestSender {
     private final ConnectionProvider connectionProvider;
@@ -29,11 +32,11 @@ public class RequestSender {
         objectMapper = new ObjectMapper();
     }
 
-    public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback){
+    public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
         sendMessage(rowRequest, callback);
     }
 
-    public void sendSubscribe(RowRequest<?, ?> rowRequest, final SubscriptionCallback<?> callback, final SubscriptionListener<?> subscriptionListener){
+    public void sendSubscribe(RowRequest<?, ?> rowRequest, final SubscriptionCallback<?> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
         sendMessage(rowRequest, new SubscriptionCallback() {
             public void onResponse(RowResponse rowResponse) {
                 String subscriptionEventName = getSubscriptionEventName(rowResponse);
@@ -56,13 +59,16 @@ public class RequestSender {
         return (String) rowResponse.getHeaders().get(Naming.SUBSCRIPTION_EVENT_HEADER_NAME);
     }
 
-    private void sendMessage(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback){
+    private void sendMessage(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
         String messageId = messageIdGenerator.generate();
         String json = getJson(messageId, rowRequest);
         try {
             callbackRegistry.registerCallback(messageId, callback);
-            connectionProvider.getSession().getAsyncRemote().sendText(json);
+            connectionProvider.getSession().sendMessage(new TextMessage(json));
         }catch (RuntimeException e){
+            callbackRegistry.unregisterCallback(messageId);
+            throw e;
+        } catch (IOException e) {
             callbackRegistry.unregisterCallback(messageId);
             throw e;
         }

@@ -19,4 +19,17 @@ public class MapCallbackRegistry implements CallbackRegistry {
     public ResponseCallback<?> getCallback(String id) {
         return registry.remove(id);
     }
+
+    public static class Factory {
+        private static MapCallbackRegistry mapCallbackRegistry;
+
+        private Factory(){}
+
+        public static synchronized MapCallbackRegistry getInstance(){
+            if(mapCallbackRegistry == null){
+                mapCallbackRegistry = new MapCallbackRegistry();
+            }
+            return mapCallbackRegistry;
+        }
+    }
 }

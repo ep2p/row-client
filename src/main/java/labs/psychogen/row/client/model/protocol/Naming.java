@@ -7,4 +7,5 @@ public interface Naming {
     String SUBSCRIPTION_EVENT_HEADER_NAME = "row-subs-event";
     String SUBSCRIPTION_Id_HEADER_NAME = "row-subs-id";
     String UNSUBSCRIBE_HEADER_NAME = "row-unsubscribe";
+    String ROW_PROTOCOL_NAME = "row-protocol";
 }

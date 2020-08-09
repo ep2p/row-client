@@ -19,4 +19,17 @@ public class MapSubscriptionListenerRegistry implements SubscriptionListenerRegi
     public void unRegister(String event){
         map.remove(event);
     }
+
+    public static class Factory {
+        private static MapSubscriptionListenerRegistry mapSubscriptionListenerRegistry;
+
+        private Factory(){}
+
+        public static synchronized MapSubscriptionListenerRegistry getInstance(){
+            if(mapSubscriptionListenerRegistry == null){
+                mapSubscriptionListenerRegistry = new MapSubscriptionListenerRegistry();
+            }
+            return mapSubscriptionListenerRegistry;
+        }
+    }
 }
