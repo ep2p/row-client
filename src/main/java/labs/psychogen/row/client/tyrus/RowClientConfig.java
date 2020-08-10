@@ -6,6 +6,7 @@ import labs.psychogen.row.client.registry.MapCallbackRegistry;
 import labs.psychogen.row.client.registry.MapSubscriptionListenerRegistry;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
 import labs.psychogen.row.client.ws.HandshakeHeadersProvider;
+import labs.psychogen.row.client.ws.RowWebsocketSession;
 import labs.psychogen.row.client.ws.WebsocketConfig;
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +16,11 @@ import java.util.Map;
 
 @Data
 @Builder
-public class RowContainer {
+public class RowClientConfig {
     private WebsocketConfig websocketConfig;
     private String address;
     @Builder.Default
-    private HandshakeHeadersProvider handshakeHeadersProvider;
+    private HandshakeHeadersProvider handshakeHeadersProvider = new HandshakeHeadersProvider.Default();
     @Builder.Default
     private CallbackRegistry callbackRegistry = MapCallbackRegistry.Factory.getInstance();
     @Builder.Default
@@ -28,4 +29,6 @@ public class RowContainer {
     private MessageIdGenerator messageIdGenerator = new UUIDMessageIdGenerator();
     @Builder.Default
     private Map<String, Object> attributes = new HashMap<String, Object>();
+    @Builder.Default
+    private ConnectionRepository<RowWebsocketSession> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
 }

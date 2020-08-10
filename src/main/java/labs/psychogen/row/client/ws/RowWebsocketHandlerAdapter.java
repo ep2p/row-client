@@ -1,13 +1,9 @@
 package labs.psychogen.row.client.ws;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.websocket.*;
 import java.nio.ByteBuffer;
 
 public class RowWebsocketHandlerAdapter extends Endpoint {
-    private final Log logger = LogFactory.getLog(RowWebsocketHandlerAdapter.class);
     private final RowWebsocketSession rowWebsocketSession;
     private final MessageHandler messageHandler;
 

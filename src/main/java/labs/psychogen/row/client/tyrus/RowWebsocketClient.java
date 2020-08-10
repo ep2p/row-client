@@ -19,14 +19,14 @@ import java.util.Collections;
 
 import static labs.psychogen.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME;
 
-public class RowWebsocketClient implements RowClient, ConnectionProvider {
+public class RowWebsocketClient implements RowClient {
     private final RequestSender requestSender;
-    private final RowContainer rowContainer;
+    private final RowClientConfig rowClientConfig;
     private volatile RowWebsocketSession webSocketSession;
 
-    public RowWebsocketClient(RowContainer rowContainer) {
-        this.requestSender = new RequestSender(this, rowContainer.getMessageIdGenerator(), rowContainer.getCallbackRegistry(), rowContainer.getSubscriptionListenerRegistry());
-        this.rowContainer = rowContainer;
+    public RowWebsocketClient(RowClientConfig rowClientConfig) {
+        this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry());
+        this.rowClientConfig = rowClientConfig;
     }
 
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
@@ -39,18 +39,10 @@ public class RowWebsocketClient implements RowClient, ConnectionProvider {
 
     @PostConstruct
     public void open() {
-        WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowContainer.getWebsocketConfig());
-        URI uri = URI.create(rowContainer.getAddress());
-        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowContainer.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
-        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowContainer.getAttributes(), uri, rowContainer.getWebsocketConfig()), new RowMessageHandler(new RowMessageHandler.Listener() {
-            public void onOpen(RowWebsocketSession rowWebsocketSession) {
-                setWebSocketSession(rowWebsocketSession);
-            }
-
-            public void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
-
-            }
-        }, rowContainer.getCallbackRegistry(), rowContainer.getSubscriptionListenerRegistry()));
+        WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowClientConfig.getWebsocketConfig());
+        URI uri = URI.create(rowClientConfig.getAddress());
+        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowClientConfig.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
+        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), new RowMessageHandler(rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getConnectionRepository()));
         try {
             webSocketContainer.connectToServer(endpoint, clientEndpointConfig, uri);
         } catch (DeploymentException e) {
@@ -68,7 +60,7 @@ public class RowWebsocketClient implements RowClient, ConnectionProvider {
         }
     }
 
-    public RowWebsocketSession getSession() {
+    public RowWebsocketSession getConnection() {
         return webSocketSession;
     }
 

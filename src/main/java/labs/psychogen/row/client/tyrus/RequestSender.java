@@ -12,19 +12,20 @@ import labs.psychogen.row.client.model.protocol.Naming;
 import labs.psychogen.row.client.model.protocol.RequestDto;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
+import labs.psychogen.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
 
 public class RequestSender {
-    private final ConnectionProvider connectionProvider;
+    private final ConnectionRepository<RowWebsocketSession> connectionRepository;
     private final MessageIdGenerator messageIdGenerator;
     private final CallbackRegistry callbackRegistry;
     private final SubscriptionListenerRegistry subscriptionListenerRegistry;
     private final ObjectMapper objectMapper;
 
-    public RequestSender(ConnectionProvider connectionProvider, MessageIdGenerator messageIdGenerator, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry) {
-        this.connectionProvider = connectionProvider;
+    public RequestSender(ConnectionRepository<RowWebsocketSession> connectionRepository, MessageIdGenerator messageIdGenerator, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry) {
+        this.connectionRepository = connectionRepository;
         this.messageIdGenerator = messageIdGenerator;
         this.callbackRegistry = callbackRegistry;
         this.subscriptionListenerRegistry = subscriptionListenerRegistry;
@@ -63,7 +64,7 @@ public class RequestSender {
         String json = getJson(messageId, rowRequest);
         try {
             callbackRegistry.registerCallback(messageId, callback);
-            connectionProvider.getSession().sendTextMessage(json);
+            connectionRepository.getConnection().sendTextMessage(json);
         }catch (RuntimeException e){
             callbackRegistry.unregisterCallback(messageId);
             throw e;

@@ -8,19 +8,18 @@ import labs.psychogen.row.client.ws.RowWebsocketSession;
 import javax.websocket.CloseReason;
 
 public class RowMessageHandler implements MessageHandler {
-    private final Listener listener;
     private final CallbackRegistry callbackRegistry;
     private final SubscriptionListenerRegistry subscriptionListenerRegistry;
+    private final ConnectionRepository<RowWebsocketSession> connectionRepository;
 
-    public RowMessageHandler(Listener listener, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry) {
+    public RowMessageHandler(CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository) {
         this.callbackRegistry = callbackRegistry;
         this.subscriptionListenerRegistry = subscriptionListenerRegistry;
-        assert listener != null;
-        this.listener = listener;
+        this.connectionRepository = connectionRepository;
     }
 
     public void onOpen(RowWebsocketSession rowWebsocketSession) {
-        listener.onOpen(rowWebsocketSession);
+        connectionRepository.setConnection(rowWebsocketSession);
     }
 
     public void onMessage(RowWebsocketSession rowWebsocketSession, String text) {
@@ -32,11 +31,5 @@ public class RowMessageHandler implements MessageHandler {
     }
 
     public void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
-        listener.onClose(rowWebsocketSession, closeReason);
-    }
-
-    public interface Listener {
-        void onOpen(RowWebsocketSession rowWebsocketSession);
-        void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason);
     }
 }
