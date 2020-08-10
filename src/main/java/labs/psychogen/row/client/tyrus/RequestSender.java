@@ -36,27 +36,8 @@ public class RequestSender {
         sendMessage(rowRequest, callback);
     }
 
-    public void sendSubscribe(RowRequest<?, ?> rowRequest, final SubscriptionCallback<?> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
-        sendMessage(rowRequest, new SubscriptionCallback() {
-            public void onResponse(RowResponse rowResponse) {
-                String subscriptionEventName = getSubscriptionEventName(rowResponse);
-                if(subscriptionEventName != null)
-                    subscriptionListenerRegistry.registerListener(subscriptionEventName, subscriptionListener);
-                callback.onResponse(rowResponse);
-            }
-
-            public void onError(Throwable throwable) {
-                callback.onError(throwable);
-            }
-
-            public Subscription getSubscription() {
-                return callback.getSubscription();
-            }
-        });
-    }
-
-    private String getSubscriptionEventName(RowResponse rowResponse){
-        return (String) rowResponse.getHeaders().get(Naming.SUBSCRIPTION_EVENT_HEADER_NAME);
+    public <E> void sendSubscribe(RowRequest<?, ?> rowRequest, final SubscriptionCallback<E> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
+        sendMessage(rowRequest, new RegistrySubscriptionCallbackDecorator<E>(callback, subscriptionListenerRegistry, subscriptionListener));
     }
 
     private void sendMessage(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
