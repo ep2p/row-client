@@ -3,7 +3,7 @@ package labs.psychogen.row.client.ws;
 
 import java.util.Map;
 
-public class AbstractWebsocketSession<T> implements NativeWebsocketSession {
+public abstract class AbstractWebsocketSession<T> implements NativeWebsocketSession, WebsocketSession {
     private T nativeSession;
     private final Map<String, Object> attributes;
 
