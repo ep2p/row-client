@@ -1,6 +1,7 @@
 package labs.psychogen.row.client.registry;
 
 import labs.psychogen.row.client.callback.ResponseCallback;
+import labs.psychogen.row.client.exceptions.CallbackNotFoundException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +18,11 @@ public class MapCallbackRegistry implements CallbackRegistry {
     }
 
     public ResponseCallback<?> getCallback(String id) {
-        return registry.remove(id);
+        ResponseCallback<?> callback = registry.remove(id);
+        if(callback == null){
+            throw new CallbackNotFoundException(id);
+        }
+        return callback;
     }
 
     public static class Factory {

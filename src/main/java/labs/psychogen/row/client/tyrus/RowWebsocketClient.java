@@ -2,7 +2,6 @@ package labs.psychogen.row.client.tyrus;
 
 import labs.psychogen.row.client.RowClient;
 import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.callback.SubscriptionCallback;
 import labs.psychogen.row.client.callback.SubscriptionListener;
 import labs.psychogen.row.client.model.RowRequest;
 import labs.psychogen.row.client.ws.ContainerFactory;
@@ -33,7 +32,7 @@ public class RowWebsocketClient implements RowClient {
         requestSender.sendRequest(rowRequest, callback);
     }
 
-    public void subscribe(RowRequest<?, ?> rowRequest, SubscriptionCallback<?> callback, SubscriptionListener<?> subscriptionListener) throws IOException {
+    public void subscribe(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback, SubscriptionListener<?> subscriptionListener) throws IOException {
         requestSender.sendSubscribe(rowRequest, callback,subscriptionListener);
     }
 

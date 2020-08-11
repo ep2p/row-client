@@ -2,13 +2,9 @@ package labs.psychogen.row.client.tyrus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import labs.psychogen.row.client.MessageIdGenerator;
-import labs.psychogen.row.client.Subscription;
 import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.callback.SubscriptionCallback;
 import labs.psychogen.row.client.callback.SubscriptionListener;
 import labs.psychogen.row.client.model.RowRequest;
-import labs.psychogen.row.client.model.RowResponse;
-import labs.psychogen.row.client.model.protocol.Naming;
 import labs.psychogen.row.client.model.protocol.RequestDto;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
@@ -36,7 +32,7 @@ public class RequestSender {
         sendMessage(rowRequest, callback);
     }
 
-    public <E> void sendSubscribe(RowRequest<?, ?> rowRequest, final SubscriptionCallback<E> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
+    public <E> void sendSubscribe(RowRequest<?, ?> rowRequest, final ResponseCallback<E> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
         sendMessage(rowRequest, new RegistrySubscriptionCallbackDecorator<E>(callback, subscriptionListenerRegistry, subscriptionListener));
     }
 
