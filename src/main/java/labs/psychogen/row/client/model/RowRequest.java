@@ -26,4 +26,11 @@ public class RowRequest<B,Q> {
             this.name = name;
         }
     }
+
+    public static <B,Q> RowRequest<B, Q> getDefault(final String address, final RowMethod rowMethod){
+        RowRequest<B, Q> rowRequest = new RowRequest<>();
+        rowRequest.setAddress(address);
+        rowRequest.setMethod(rowMethod);
+        return rowRequest;
+    }
 }

@@ -1,17 +1,17 @@
 package labs.psychogen.row.client.tyrus;
 
 import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.callback.SubscriptionCallbackDecorator;
+import labs.psychogen.row.client.callback.ResponseCallbackDecorator;
 import labs.psychogen.row.client.callback.SubscriptionListener;
 import labs.psychogen.row.client.model.RowResponse;
 import labs.psychogen.row.client.model.protocol.Naming;
 import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
 
-public class RegistrySubscriptionCallbackDecorator<E> extends SubscriptionCallbackDecorator<E> {
+public class RegistryResponseCallbackDecorator<E> extends ResponseCallbackDecorator<E> {
     private final SubscriptionListenerRegistry subscriptionListenerRegistry;
     private final SubscriptionListener<?> subscriptionListener;
 
-    public RegistrySubscriptionCallbackDecorator(ResponseCallback<E> responseCallback, SubscriptionListenerRegistry subscriptionListenerRegistry, SubscriptionListener<?> subscriptionListener) {
+    public RegistryResponseCallbackDecorator(ResponseCallback<E> responseCallback, SubscriptionListenerRegistry subscriptionListenerRegistry, SubscriptionListener<?> subscriptionListener) {
         super(responseCallback);
         this.subscriptionListenerRegistry = subscriptionListenerRegistry;
         this.subscriptionListener = subscriptionListener;
