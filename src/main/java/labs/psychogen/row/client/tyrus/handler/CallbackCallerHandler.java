@@ -2,7 +2,7 @@ package labs.psychogen.row.client.tyrus.handler;
 
 import labs.psychogen.row.client.Subscription;
 import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.exceptions.ResponseException;
+import labs.psychogen.row.client.exception.ResponseException;
 import labs.psychogen.row.client.model.RowRequest;
 import labs.psychogen.row.client.model.RowResponse;
 import labs.psychogen.row.client.model.protocol.Naming;

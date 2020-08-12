@@ -1,7 +1,7 @@
 package labs.psychogen.row.client.registry;
 
 import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.exceptions.CallbackNotFoundException;
+import labs.psychogen.row.client.exception.CallbackNotFoundException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

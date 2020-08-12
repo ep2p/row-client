@@ -1,4 +1,4 @@
-package labs.psychogen.row.client.exceptions;
+package labs.psychogen.row.client.exception;
 
 public class CallbackNotFoundException extends RuntimeException {
     public CallbackNotFoundException(String requestId) {

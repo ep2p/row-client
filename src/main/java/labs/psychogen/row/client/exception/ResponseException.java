@@ -1,4 +1,4 @@
-package labs.psychogen.row.client.exceptions;
+package labs.psychogen.row.client.exception;
 
 import lombok.Getter;
 
