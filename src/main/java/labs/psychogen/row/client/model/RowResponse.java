@@ -4,7 +4,6 @@ import labs.psychogen.row.client.Subscription;
 import labs.psychogen.row.client.model.protocol.RowResponseStatus;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 

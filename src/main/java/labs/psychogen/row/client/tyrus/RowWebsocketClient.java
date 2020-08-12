@@ -58,12 +58,4 @@ public class RowWebsocketClient implements RowClient {
             this.webSocketSession = null;
         }
     }
-
-    public RowWebsocketSession getConnection() {
-        return webSocketSession;
-    }
-
-    private void setWebSocketSession(RowWebsocketSession webSocketSession){
-        this.webSocketSession = webSocketSession;
-    }
 }

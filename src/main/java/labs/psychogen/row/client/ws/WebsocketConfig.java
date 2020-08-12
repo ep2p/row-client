@@ -1,6 +1,8 @@
 package labs.psychogen.row.client.ws;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
 
 @Builder
 @Data
