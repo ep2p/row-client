@@ -8,7 +8,7 @@ import labs.psychogen.row.client.model.RowResponse;
 import labs.psychogen.row.client.model.protocol.Naming;
 import labs.psychogen.row.client.model.protocol.ResponseDto;
 import labs.psychogen.row.client.model.protocol.RowResponseStatus;
-import labs.psychogen.row.client.pipeline.Pipeline;
+import labs.psychogen.row.client.pipeline.StoppablePipeline;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.tyrus.ConnectionRepository;
 import labs.psychogen.row.client.util.MessageConverter;
@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 
 import java.util.Random;
 
-public class CallbackCallerHandler implements Pipeline.Handler<MessageHandlerInput, Void> {
+public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final CallbackRegistry callbackRegistry;
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
     private final MessageConverter messageConverter;
@@ -29,13 +29,13 @@ public class CallbackCallerHandler implements Pipeline.Handler<MessageHandlerInp
     }
 
     @Override
-    public Void process(MessageHandlerInput input) {
+    public boolean process(MessageHandlerInput input, Void aVoid) {
         ResponseDto responseDto = input.getResponseDto();
         if (responseDto.getRequestId() == null) {
-            return null;
+            return true;
         }
         callCallback(input);
-        return null;
+        return false;
     }
 
     private void callCallback(MessageHandlerInput input) {

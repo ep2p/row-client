@@ -19,9 +19,9 @@ public class RegistryResponseCallbackDecorator<E> extends ResponseCallbackDecora
 
     @Override
     public void onResponse(RowResponse<E> rowResponse) {
-        String subscriptionEventName = getSubscriptionEventName(rowResponse);
-        if(isNewSubscription(rowResponse) && subscriptionEventName != null)
-            subscriptionListenerRegistry.registerListener(subscriptionEventName, subscriptionListener);
+        if(rowResponse.getSubscription() != null){
+            subscriptionListenerRegistry.registerListener(rowResponse.getSubscription().eventName(), new SubscriptionListenerRegistry.SubscriptionRegistryModel<>(rowResponse.getSubscription(), subscriptionListener));
+        }
         super.onResponse(rowResponse);
     }
 

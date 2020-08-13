@@ -1,18 +1,16 @@
 package labs.psychogen.row.client.registry;
 
-import labs.psychogen.row.client.callback.SubscriptionListener;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapSubscriptionListenerRegistry implements SubscriptionListenerRegistry {
-    private final Map<String, SubscriptionListener<?>> map = new ConcurrentHashMap<String, SubscriptionListener<?>>();
+    private final Map<String, SubscriptionRegistryModel<?>> map = new ConcurrentHashMap<String, SubscriptionRegistryModel<?>>();
 
-    public void registerListener(String event, SubscriptionListener<?> subscriptionListener){
-        map.put(event, subscriptionListener);
+    public void registerListener(String event, SubscriptionRegistryModel<?> subscriptionRegistryModel){
+        map.put(event, subscriptionRegistryModel);
     }
 
-    public SubscriptionListener<?> getSubscriptionListener(String event){
+    public SubscriptionRegistryModel<?> getSubscriptionListener(String event){
         return map.get(event);
     }
 
