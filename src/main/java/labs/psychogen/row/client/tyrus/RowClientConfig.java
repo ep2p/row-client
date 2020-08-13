@@ -1,6 +1,7 @@
 package labs.psychogen.row.client.tyrus;
 
 import labs.psychogen.row.client.MessageIdGenerator;
+import labs.psychogen.row.client.callback.GeneralCallback;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.MapCallbackRegistry;
 import labs.psychogen.row.client.registry.MapSubscriptionListenerRegistry;
@@ -31,4 +32,6 @@ public class RowClientConfig {
     private Map<String, Object> attributes = new HashMap<String, Object>();
     @Builder.Default
     private ConnectionRepository<RowWebsocketSession> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
+    @Builder.Default
+    private GeneralCallback<?> generalCallback;
 }

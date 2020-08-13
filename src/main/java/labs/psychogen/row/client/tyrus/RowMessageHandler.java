@@ -1,20 +1,18 @@
 package labs.psychogen.row.client.tyrus;
 
-import labs.psychogen.row.client.registry.CallbackRegistry;
-import labs.psychogen.row.client.registry.SubscriptionListenerRegistry;
+import labs.psychogen.row.client.pipeline.StoppablePipeline;
+import labs.psychogen.row.client.tyrus.handler.MessageHandlerInput;
 import labs.psychogen.row.client.ws.MessageHandler;
 import labs.psychogen.row.client.ws.RowWebsocketSession;
 
 import javax.websocket.CloseReason;
 
 public class RowMessageHandler implements MessageHandler {
-    private final CallbackRegistry callbackRegistry;
-    private final SubscriptionListenerRegistry subscriptionListenerRegistry;
+    private final StoppablePipeline<MessageHandlerInput, Void> pipeline;
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
 
-    public RowMessageHandler(CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository) {
-        this.callbackRegistry = callbackRegistry;
-        this.subscriptionListenerRegistry = subscriptionListenerRegistry;
+    public RowMessageHandler(StoppablePipeline<MessageHandlerInput, Void> pipeline, ConnectionRepository<RowWebsocketSession> connectionRepository) {
+        this.pipeline = pipeline;
         this.connectionRepository = connectionRepository;
     }
 
@@ -23,7 +21,7 @@ public class RowMessageHandler implements MessageHandler {
     }
 
     public void onMessage(RowWebsocketSession rowWebsocketSession, String text) {
-
+        pipeline.execute(new MessageHandlerInput(text), null);
     }
 
     public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {

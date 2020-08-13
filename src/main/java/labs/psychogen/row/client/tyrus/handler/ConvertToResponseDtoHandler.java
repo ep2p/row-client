@@ -2,10 +2,10 @@ package labs.psychogen.row.client.tyrus.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import labs.psychogen.row.client.model.protocol.ResponseDto;
-import labs.psychogen.row.client.pipeline.HandlerPipeline;
+import labs.psychogen.row.client.pipeline.StoppablePipeline;
 import lombok.SneakyThrows;
 
-public class ConvertToResponseDtoHandler implements HandlerPipeline.Handler<MessageHandlerInput, Void> {
+public class ConvertToResponseDtoHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final ObjectMapper objectMapper;
 
     public ConvertToResponseDtoHandler(ObjectMapper objectMapper) {
@@ -14,9 +14,9 @@ public class ConvertToResponseDtoHandler implements HandlerPipeline.Handler<Mess
 
     @SneakyThrows
     @Override
-    public Void process(MessageHandlerInput input) {
+    public boolean process(MessageHandlerInput input, Void aVoid) {
         ResponseDto responseDto = objectMapper.readValue(input.getJson(), ResponseDto.class);
         input.setResponseDto(responseDto);
-        return null;
+        return true;
     }
 }

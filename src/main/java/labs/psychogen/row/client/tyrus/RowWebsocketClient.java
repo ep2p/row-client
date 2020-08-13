@@ -4,6 +4,7 @@ import labs.psychogen.row.client.RowClient;
 import labs.psychogen.row.client.callback.ResponseCallback;
 import labs.psychogen.row.client.callback.SubscriptionListener;
 import labs.psychogen.row.client.model.RowRequest;
+import labs.psychogen.row.client.tyrus.handler.PipelineFactory;
 import labs.psychogen.row.client.ws.ContainerFactory;
 import labs.psychogen.row.client.ws.RowClientEndpointConfig;
 import labs.psychogen.row.client.ws.RowWebsocketHandlerAdapter;
@@ -41,7 +42,7 @@ public class RowWebsocketClient implements RowClient {
         WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowClientConfig.getWebsocketConfig());
         URI uri = URI.create(rowClientConfig.getAddress());
         ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowClientConfig.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
-        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), new RowMessageHandler(rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getConnectionRepository()));
+        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), new RowMessageHandler(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository()));
         try {
             webSocketContainer.connectToServer(endpoint, clientEndpointConfig, uri);
         } catch (DeploymentException e) {
