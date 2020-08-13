@@ -13,6 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 @Data
+@ToString
 public class RowResponse<E> {
     private String requestId;
     private E body;

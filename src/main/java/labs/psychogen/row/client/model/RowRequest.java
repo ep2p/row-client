@@ -1,15 +1,13 @@
 package labs.psychogen.row.client.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RowRequest<B,Q> {
     private RowMethod method;
     private String address;

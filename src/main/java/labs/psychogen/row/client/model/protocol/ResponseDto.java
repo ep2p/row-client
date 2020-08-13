@@ -2,6 +2,7 @@ package labs.psychogen.row.client.model.protocol;
 
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -16,7 +17,7 @@ public class ResponseDto {
     private int status;
     private Map<String, String> headers;
 
-    public void setStatus(RowResponseStatus status) {
-        this.status = status.getId();
+    public Map<String, String> getHeaders() {
+        return headers == null ? new HashMap<>() : headers;
     }
 }
