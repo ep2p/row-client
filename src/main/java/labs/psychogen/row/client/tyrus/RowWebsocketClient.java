@@ -47,7 +47,8 @@ public class RowWebsocketClient implements RowClient {
         WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowClientConfig.getWebsocketConfig());
         URI uri = URI.create(rowClientConfig.getAddress());
         ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowClientConfig.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
-        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), new RowMessageHandler(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository()));
+        RowMessageHandler rowMessageHandler = new RowMessageHandler(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository(), rowClientConfig.getClosePolicy(), rowClientConfig.getRowErrorHandler(), this);
+        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), rowMessageHandler);
         Callable<Void> callableContainer = getCallableContainer(webSocketContainer, uri, clientEndpointConfig, endpoint);
         if(this.rowClientConfig.getExecutorService() != null){
             this.rowClientConfig.getExecutorService().submit(callableContainer);
