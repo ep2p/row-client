@@ -21,7 +21,8 @@ import java.util.concurrent.ExecutorService;
 @Data
 @Builder
 public class RowClientConfig {
-    private WebsocketConfig websocketConfig;
+    @Builder.Default
+    private WebsocketConfig websocketConfig = new WebsocketConfig();
     private String address;
     @Builder.Default
     private HandshakeHeadersProvider handshakeHeadersProvider = new HandshakeHeadersProvider.Default();
