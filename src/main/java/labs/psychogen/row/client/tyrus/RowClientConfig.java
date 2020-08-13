@@ -14,6 +14,7 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 @Data
 @Builder
@@ -34,4 +35,5 @@ public class RowClientConfig {
     private ConnectionRepository<RowWebsocketSession> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
     @Builder.Default
     private GeneralCallback<?> generalCallback;
+    private ExecutorService executorService;
 }
