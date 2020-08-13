@@ -97,5 +97,12 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
             return this.subscriptionEventName;
         }
 
+        @Override
+        public String toString() {
+            return "RowSubscription{" +
+                    "subscriptionId='" + subscriptionId + '\'' +
+                    ", subscriptionEventName='" + subscriptionEventName + '\'' +
+                    '}';
+        }
     }
 }
