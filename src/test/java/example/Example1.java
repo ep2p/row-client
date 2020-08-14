@@ -34,7 +34,10 @@ public class Example1 {
         rowClient.open();
 
         //t1
-        RowRequest<SampleDto, SampleDto> request = RowRequest.<SampleDto, SampleDto>builder().address("/t1").method(RowRequest.RowMethod.GET).build();
+        RowRequest<SampleDto, SampleDto> request = RowRequest.<SampleDto, SampleDto>builder()
+                .address("/t1")
+                .method(RowRequest.RowMethod.GET)
+                .build();
         rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
