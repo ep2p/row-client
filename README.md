@@ -97,7 +97,7 @@ rowClient.subscribe(request, new ResponseCallback<SampleDto>() {
     });
 ```
 
-Check `RowClientConfig` for more config parameters. For example you can pass handshake headers throw configuration:
+Check `RowClientConfig` for more config parameters. For example you can pass handshake headers through configuration:
 
 ```
 RowClient rowClient = new RowWebsocketClient(RowClientConfig.builder()
