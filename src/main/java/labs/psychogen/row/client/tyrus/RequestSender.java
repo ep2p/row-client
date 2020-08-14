@@ -37,13 +37,10 @@ public class RequestSender {
     private void sendMessage(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
         String messageId = messageIdGenerator.generate();
         String json = messageConverter.getJson(messageId, rowRequest);
+        callbackRegistry.registerCallback(messageId, callback);
         try {
-            callbackRegistry.registerCallback(messageId, callback);
             connectionRepository.getConnection().sendTextMessage(json);
-        }catch (RuntimeException e){
-            callbackRegistry.unregisterCallback(messageId);
-            throw e;
-        } catch (IOException e) {
+        }catch (RuntimeException | IOException e){
             callbackRegistry.unregisterCallback(messageId);
             throw e;
         }

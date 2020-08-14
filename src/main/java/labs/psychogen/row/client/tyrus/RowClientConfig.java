@@ -1,9 +1,8 @@
 package labs.psychogen.row.client.tyrus;
 
 import labs.psychogen.row.client.MessageIdGenerator;
-import labs.psychogen.row.client.RowClient;
 import labs.psychogen.row.client.callback.GeneralCallback;
-import labs.psychogen.row.client.callback.RowErrorHandler;
+import labs.psychogen.row.client.callback.RowTransportListener;
 import labs.psychogen.row.client.registry.CallbackRegistry;
 import labs.psychogen.row.client.registry.MapCallbackRegistry;
 import labs.psychogen.row.client.registry.MapSubscriptionListenerRegistry;
@@ -40,7 +39,5 @@ public class RowClientConfig {
     private GeneralCallback<?> generalCallback;
     private ExecutorService executorService;
     @Builder.Default
-    private ClosePolicy<RowClient> closePolicy = new ClosePolicy.IgnorePolicy<RowClient>();
-    @Builder.Default
-    private RowErrorHandler rowErrorHandler = new RowErrorHandler.Default();
+    private RowTransportListener rowTransportListener = new RowTransportListener.Default();
 }

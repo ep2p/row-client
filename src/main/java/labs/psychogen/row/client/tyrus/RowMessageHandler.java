@@ -1,7 +1,7 @@
 package labs.psychogen.row.client.tyrus;
 
 import labs.psychogen.row.client.RowClient;
-import labs.psychogen.row.client.callback.RowErrorHandler;
+import labs.psychogen.row.client.callback.RowTransportListener;
 import labs.psychogen.row.client.pipeline.StoppablePipeline;
 import labs.psychogen.row.client.tyrus.handler.MessageHandlerInput;
 import labs.psychogen.row.client.ws.MessageHandler;
@@ -12,15 +12,13 @@ import javax.websocket.CloseReason;
 public class RowMessageHandler implements MessageHandler {
     private final StoppablePipeline<MessageHandlerInput, Void> pipeline;
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
-    private final ClosePolicy<RowClient> closePolicy;
-    private final RowErrorHandler rowErrorHandler;
+    private final RowTransportListener rowTransportListener;
     private final RowClient rowClient;
 
-    public RowMessageHandler(StoppablePipeline<MessageHandlerInput, Void> pipeline, ConnectionRepository<RowWebsocketSession> connectionRepository, ClosePolicy<RowClient> closePolicy, RowErrorHandler rowErrorHandler, RowClient rowClient) {
+    public RowMessageHandler(StoppablePipeline<MessageHandlerInput, Void> pipeline, ConnectionRepository<RowWebsocketSession> connectionRepository, RowTransportListener rowTransportListener, RowClient rowClient) {
         this.pipeline = pipeline;
         this.connectionRepository = connectionRepository;
-        this.closePolicy = closePolicy;
-        this.rowErrorHandler = rowErrorHandler;
+        this.rowTransportListener = rowTransportListener;
         this.rowClient = rowClient;
     }
 
@@ -33,10 +31,10 @@ public class RowMessageHandler implements MessageHandler {
     }
 
     public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {
-        rowErrorHandler.onError(rowWebsocketSession, throwable);
+        rowTransportListener.onError(rowWebsocketSession, throwable);
     }
 
     public void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
-        closePolicy.execute(this.rowClient);
+        rowTransportListener.onClose(this.rowClient, rowWebsocketSession, closeReason);
     }
 }
