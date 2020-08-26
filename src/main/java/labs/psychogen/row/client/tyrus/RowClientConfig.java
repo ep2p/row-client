@@ -13,6 +13,8 @@ import labs.psychogen.row.client.ws.WebsocketConfig;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.net.ssl.SSLContext;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -40,4 +42,12 @@ public class RowClientConfig {
     private ExecutorService executorService;
     @Builder.Default
     private RowTransportListener rowTransportListener = new RowTransportListener.Default();
+    private SSLContext sslContext;
+    {
+        try {
+            sslContext = SSLContext.getDefault();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 }

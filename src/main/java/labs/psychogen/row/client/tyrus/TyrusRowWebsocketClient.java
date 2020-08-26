@@ -23,12 +23,12 @@ import java.util.concurrent.Callable;
 
 import static labs.psychogen.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME;
 
-public class RowWebsocketClient implements RowClient {
+public class TyrusRowWebsocketClient implements RowClient {
     private final RequestSender requestSender;
     private final RowClientConfig rowClientConfig;
     private volatile RowWebsocketSession webSocketSession;
 
-    public RowWebsocketClient(RowClientConfig rowClientConfig) {
+    public TyrusRowWebsocketClient(RowClientConfig rowClientConfig) {
         this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry());
         this.rowClientConfig = rowClientConfig;
     }

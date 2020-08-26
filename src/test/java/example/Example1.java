@@ -8,7 +8,7 @@ import labs.psychogen.row.client.model.PublishedMessage;
 import labs.psychogen.row.client.model.RowRequest;
 import labs.psychogen.row.client.model.RowResponse;
 import labs.psychogen.row.client.tyrus.RowClientConfig;
-import labs.psychogen.row.client.tyrus.RowWebsocketClient;
+import labs.psychogen.row.client.tyrus.TyrusRowWebsocketClient;
 import labs.psychogen.row.client.ws.HandshakeHeadersProvider;
 import lombok.SneakyThrows;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 public class Example1 {
     @SneakyThrows
     public static void main(String[] args) {
-        RowClient rowClient = new RowWebsocketClient(RowClientConfig.builder()
+        RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.builder()
                 .address("ws://localhost:8080/ws")
                 .handshakeHeadersProvider(new HandshakeHeadersProvider() {
                     @Override
