@@ -24,7 +24,7 @@ Then add the dependency:
 <dependency>
     <groupId>com.github.psychogen-labs</groupId>
     <artifactId>java-row-client</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
 </dependency>
 ```
 
