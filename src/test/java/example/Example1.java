@@ -1,15 +1,15 @@
 package example;
 
-import labs.psychogen.row.client.RowClient;
-import labs.psychogen.row.client.Subscription;
-import labs.psychogen.row.client.callback.ResponseCallback;
-import labs.psychogen.row.client.callback.SubscriptionListener;
-import labs.psychogen.row.client.model.PublishedMessage;
-import labs.psychogen.row.client.model.RowRequest;
-import labs.psychogen.row.client.model.RowResponse;
-import labs.psychogen.row.client.tyrus.RowClientConfig;
-import labs.psychogen.row.client.tyrus.TyrusRowWebsocketClient;
-import labs.psychogen.row.client.ws.HandshakeHeadersProvider;
+import lab.idioglossia.row.client.RowClient;
+import lab.idioglossia.row.client.Subscription;
+import lab.idioglossia.row.client.callback.ResponseCallback;
+import lab.idioglossia.row.client.callback.SubscriptionListener;
+import lab.idioglossia.row.client.model.PublishedMessage;
+import lab.idioglossia.row.client.model.RowRequest;
+import lab.idioglossia.row.client.model.RowResponse;
+import lab.idioglossia.row.client.tyrus.RowClientConfig;
+import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
+import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lombok.SneakyThrows;
 
 import java.util.Collections;
