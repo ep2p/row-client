@@ -1,5 +1,5 @@
 # java-row-client
-[![](https://jitpack.io/v/psychogen-labs/java-row-client.svg)](https://jitpack.io/#psychogen-labs/java-row-client)
+[![](https://jitpack.io/v/idioglossia/java-row-client.svg)](https://jitpack.io/#idioglossia/java-row-client)
 
 Java client for ROW (Rest Over Websocket)
 
@@ -22,9 +22,9 @@ Then add the dependency:
 
 ```
 <dependency>
-    <groupId>com.github.psychogen-labs</groupId>
-    <artifactId>java-row-client</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <groupId>com.github.idioglossia</groupId>
+	<artifactId>java-row-client</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
