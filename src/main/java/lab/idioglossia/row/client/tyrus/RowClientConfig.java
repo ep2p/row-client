@@ -35,7 +35,6 @@ public class RowClientConfig {
     private Map<String, Object> attributes = new HashMap<String, Object>();
     @Builder.Default
     private ConnectionRepository<RowWebsocketSession> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
-    @Builder.Default
     private GeneralCallback<?> generalCallback;
     private ExecutorService executorService;
     @Builder.Default
