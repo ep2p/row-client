@@ -2,6 +2,7 @@ package example;
 
 import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.Subscription;
+import lab.idioglossia.row.client.callback.HttpExtendedResponseCallback;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
 import lab.idioglossia.row.client.model.PublishedMessage;
@@ -88,7 +89,12 @@ public class Example1 {
         request.setMethod(RowRequest.RowMethod.GET);
         request.setQuery(null);
         request.setBody(null);
-        rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
+        rowClient.sendRequest(request, new HttpExtendedResponseCallback<SampleDto>() {
+            @Override
+            public Class<SampleDto> getResponseBodyClass() {
+                return SampleDto.class;
+            }
+
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);

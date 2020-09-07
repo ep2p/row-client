@@ -1,5 +1,6 @@
 package lab.idioglossia.row.client;
 
+import lab.idioglossia.row.client.callback.HttpExtendedResponseCallback;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.model.RowRequest;
 
@@ -19,7 +20,8 @@ public class HttpFallbackRowClientDecorator extends RowClientDecorator {
         try {
             super.sendRequest(rowRequest, callback);
         }catch (IOException e){
-            rowHttpClient.sendRequest(rowRequest, callback);
+            if(callback instanceof HttpExtendedResponseCallback)
+                rowHttpClient.sendRequest(rowRequest, (HttpExtendedResponseCallback) callback);
         }
     }
 
