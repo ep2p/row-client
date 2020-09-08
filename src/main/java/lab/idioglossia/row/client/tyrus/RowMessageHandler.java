@@ -24,6 +24,7 @@ public class RowMessageHandler implements MessageHandler {
 
     public void onOpen(RowWebsocketSession rowWebsocketSession) {
         connectionRepository.setConnection(rowWebsocketSession);
+        rowTransportListener.onOpen(rowWebsocketSession);
     }
 
     public void onMessage(RowWebsocketSession rowWebsocketSession, String text) {
