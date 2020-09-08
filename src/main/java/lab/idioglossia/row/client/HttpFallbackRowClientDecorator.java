@@ -19,7 +19,7 @@ public class HttpFallbackRowClientDecorator extends RowClientDecorator {
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) {
         try {
             super.sendRequest(rowRequest, callback);
-        }catch (IOException e){
+        }catch (IOException | IllegalStateException e){
             if(callback instanceof HttpExtendedResponseCallback)
                 rowHttpClient.sendRequest(rowRequest, (HttpExtendedResponseCallback) callback);
         }
