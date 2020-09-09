@@ -1,8 +1,10 @@
 package lab.idioglossia.row.client.model.protocol;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
@@ -13,7 +15,7 @@ import java.util.Map;
 @Data
 public class ResponseDto {
     private String requestId;
-    private Object body;
+    private JsonNode body;
     private int status;
     private Map<String, String> headers;
 

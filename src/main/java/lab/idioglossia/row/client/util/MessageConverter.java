@@ -1,5 +1,7 @@
 package lab.idioglossia.row.client.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.protocol.RequestDto;
@@ -23,5 +25,9 @@ public class MessageConverter {
                 .query(rowRequest.getQuery()).build();
 
         return objectMapper.writeValueAsString(requestDto);
+    }
+
+    public <E> E readJsonNode(JsonNode jsonNode, Class<E> eClass) throws JsonProcessingException {
+        return objectMapper.treeToValue(jsonNode, eClass);
     }
 }

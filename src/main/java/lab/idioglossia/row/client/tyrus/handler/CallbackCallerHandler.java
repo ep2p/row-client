@@ -1,5 +1,6 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.exception.ResponseException;
@@ -41,7 +42,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     private void callCallback(MessageHandlerInput input) {
         ResponseCallback<?> callback = callbackRegistry.getCallback(input.getResponseDto().getRequestId());
         try {
-            RowResponse rowResponse = getRowResponse(input);
+            RowResponse rowResponse = getRowResponse(input, callback.getResponseBodyClass());
             rowResponse.setSubscription(getSubscription(input.getResponseDto()));
             callback.onResponse(rowResponse);
         } catch (ResponseException e) {
@@ -50,11 +51,12 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
 
     }
 
-    private RowResponse getRowResponse(MessageHandlerInput input) throws ResponseException {
+    @SneakyThrows
+    private RowResponse getRowResponse(MessageHandlerInput input, Class responseBodyClassType) throws ResponseException {
         ResponseDto responseDto = input.getResponseDto();
         if (responseDto.getStatus() == RowResponseStatus.OK.getId()) {
             RowResponse rowResponse = new RowResponse();
-            rowResponse.setBody(responseDto.getBody());
+            rowResponse.setBody(messageConverter.readJsonNode(responseDto.getBody(), responseBodyClassType));
             rowResponse.setHeaders(responseDto.getHeaders());
             rowResponse.setRequestId(responseDto.getRequestId());
             rowResponse.setStatus(RowResponseStatus.OK);

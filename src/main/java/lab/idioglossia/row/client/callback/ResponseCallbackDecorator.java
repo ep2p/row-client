@@ -2,10 +2,11 @@ package lab.idioglossia.row.client.callback;
 
 import lab.idioglossia.row.client.model.RowResponse;
 
-public class ResponseCallbackDecorator<E> implements ResponseCallback<E> {
+public abstract class ResponseCallbackDecorator<E> extends ResponseCallback<E> {
     private final ResponseCallback<E> responseCallback;
 
     public ResponseCallbackDecorator(ResponseCallback<E> responseCallback) {
+        super(responseCallback.getResponseBodyClass());
         this.responseCallback = responseCallback;
     }
 

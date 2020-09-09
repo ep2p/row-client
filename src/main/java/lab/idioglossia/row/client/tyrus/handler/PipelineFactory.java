@@ -24,7 +24,7 @@ public class PipelineFactory {
         StoppablePipeline<MessageHandlerInput, Void> pipeline = new StoppablePipeline<>();
         return pipeline.addStage(new ConvertToResponseDtoHandler(new ObjectMapper()))
                 .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository))
-                .addStage(new PublisherHandler(subscriptionListenerRegistry))
+                .addStage(new PublisherHandler(subscriptionListenerRegistry, messageConverter))
                 .addStage(new GeneralCallbackHandler(generalCallback));
     }
 

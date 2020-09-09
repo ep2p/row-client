@@ -2,7 +2,6 @@ package example;
 
 import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.Subscription;
-import lab.idioglossia.row.client.callback.HttpExtendedResponseCallback;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
 import lab.idioglossia.row.client.model.PublishedMessage;
@@ -39,7 +38,7 @@ public class Example1 {
                 .address("/t1")
                 .method(RowRequest.RowMethod.GET)
                 .build();
-        rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
+        rowClient.sendRequest(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
@@ -56,7 +55,7 @@ public class Example1 {
         request.setAddress("/t2");
         request.setMethod(RowRequest.RowMethod.POST);
         request.setBody(new SampleDto("alter me :P "));
-        rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
+        rowClient.sendRequest(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
@@ -72,7 +71,7 @@ public class Example1 {
         //t3
         request.setAddress("/t3");
         request.setQuery(new SampleDto("This is my query"));
-        rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
+        rowClient.sendRequest(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
@@ -89,12 +88,7 @@ public class Example1 {
         request.setMethod(RowRequest.RowMethod.GET);
         request.setQuery(null);
         request.setBody(null);
-        rowClient.sendRequest(request, new HttpExtendedResponseCallback<SampleDto>() {
-            @Override
-            public Class<SampleDto> getResponseBodyClass() {
-                return SampleDto.class;
-            }
-
+        rowClient.sendRequest(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
@@ -109,7 +103,7 @@ public class Example1 {
 
         //subs/t1
         request.setAddress("/subs/t1");
-        rowClient.subscribe(request, new ResponseCallback<SampleDto>() {
+        rowClient.subscribe(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
@@ -120,9 +114,9 @@ public class Example1 {
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
             }
-        }, new SubscriptionListener<SampleDto>() {
+        }, new SubscriptionListener<SampleDto>(SampleDto.class) {
             @Override
-            public void onMessage(Subscription subscription, PublishedMessage<SampleDto> sampleDto) {
+            public void onMessage(Subscription subscription, SampleDto sampleDto) {
                 System.out.println(sampleDto);
                 System.out.println(subscription);
             }
@@ -134,7 +128,7 @@ public class Example1 {
         request.setAddress("/subs/publish/t1");
         request.setMethod(RowRequest.RowMethod.POST);
         request.setBody(new SampleDto("publish me :P "));
-        rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
+        rowClient.sendRequest(request, new ResponseCallback<SampleDto>(SampleDto.class) {
             @Override
             public void onResponse(RowResponse<SampleDto> rowResponse) {
                 System.out.println(rowResponse);
