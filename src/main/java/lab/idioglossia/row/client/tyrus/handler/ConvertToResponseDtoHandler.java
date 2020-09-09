@@ -1,9 +1,10 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.model.protocol.ResponseDto;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
-import lombok.SneakyThrows;
 
 public class ConvertToResponseDtoHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final ObjectMapper objectMapper;
@@ -12,11 +13,15 @@ public class ConvertToResponseDtoHandler implements StoppablePipeline.Stage<Mess
         this.objectMapper = objectMapper;
     }
 
-    @SneakyThrows
     @Override
-    public boolean process(MessageHandlerInput input, Void aVoid) {
-        ResponseDto responseDto = objectMapper.readValue(input.getJson(), ResponseDto.class);
-        input.setResponseDto(responseDto);
-        return true;
+    public boolean process(MessageHandlerInput input, Void aVoid) throws MessageDataProcessingException {
+        ResponseDto responseDto = null;
+        try {
+            responseDto = objectMapper.readValue(input.getJson(), ResponseDto.class);
+            input.setResponseDto(responseDto);
+            return true;
+        } catch (JsonProcessingException e) {
+            throw new MessageDataProcessingException(e);
+        }
     }
 }

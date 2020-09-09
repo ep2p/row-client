@@ -1,8 +1,9 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
+import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.exception.ResponseException;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
@@ -30,7 +31,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     }
 
     @Override
-    public boolean process(MessageHandlerInput input, Void aVoid) {
+    public boolean process(MessageHandlerInput input, Void aVoid) throws MessageDataProcessingException {
         ResponseDto responseDto = input.getResponseDto();
         if (responseDto.getRequestId() == null) {
             return true;
@@ -39,7 +40,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         return false;
     }
 
-    private void callCallback(MessageHandlerInput input) {
+    private void callCallback(MessageHandlerInput input) throws MessageDataProcessingException {
         ResponseCallback<?> callback = callbackRegistry.getCallback(input.getResponseDto().getRequestId());
         try {
             RowResponse rowResponse = getRowResponse(input, callback.getResponseBodyClass());
@@ -51,12 +52,15 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
 
     }
 
-    @SneakyThrows
-    private RowResponse getRowResponse(MessageHandlerInput input, Class responseBodyClassType) throws ResponseException {
+    private RowResponse getRowResponse(MessageHandlerInput input, Class responseBodyClassType) throws ResponseException, MessageDataProcessingException {
         ResponseDto responseDto = input.getResponseDto();
         if (responseDto.getStatus() == RowResponseStatus.OK.getId()) {
             RowResponse rowResponse = new RowResponse();
-            rowResponse.setBody(messageConverter.readJsonNode(responseDto.getBody(), responseBodyClassType));
+            try {
+                rowResponse.setBody(messageConverter.readJsonNode(responseDto.getBody(), responseBodyClassType));
+            } catch (JsonProcessingException e) {
+                throw new MessageDataProcessingException(e);
+            }
             rowResponse.setHeaders(responseDto.getHeaders());
             rowResponse.setRequestId(responseDto.getRequestId());
             rowResponse.setStatus(RowResponseStatus.OK);

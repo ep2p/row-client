@@ -2,6 +2,7 @@ package lab.idioglossia.row.client.tyrus;
 
 import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.callback.RowTransportListener;
+import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.tyrus.handler.MessageHandlerInput;
 import lab.idioglossia.row.client.ws.MessageHandler;
@@ -28,7 +29,11 @@ public class RowMessageHandler implements MessageHandler {
     }
 
     public void onMessage(RowWebsocketSession rowWebsocketSession, String text) {
-        pipeline.execute(new MessageHandlerInput(text), null);
+        try {
+            pipeline.execute(new MessageHandlerInput(text), null);
+        } catch (MessageDataProcessingException e) {
+            rowTransportListener.onError(rowWebsocketSession, e);
+        }
     }
 
     public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {

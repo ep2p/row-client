@@ -1,12 +1,13 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
+import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.model.protocol.Naming;
 import lab.idioglossia.row.client.model.protocol.ResponseDto;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
 import lab.idioglossia.row.client.util.MessageConverter;
-import lombok.SneakyThrows;
 
 public class PublisherHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final SubscriptionListenerRegistry subscriptionListenerRegistry;
@@ -17,14 +18,17 @@ public class PublisherHandler implements StoppablePipeline.Stage<MessageHandlerI
         this.messageConverter = messageConverter;
     }
 
-    @SneakyThrows
     @Override
-    public boolean process(MessageHandlerInput input, Void aVoid) {
+    public boolean process(MessageHandlerInput input, Void aVoid) throws MessageDataProcessingException {
         ResponseDto responseDto = input.getResponseDto();
         if(responseDto.getHeaders().containsKey(Naming.SUBSCRIPTION_EVENT_HEADER_NAME) && !responseDto.getHeaders().containsKey(Naming.SUBSCRIPTION_Id_HEADER_NAME)){
             SubscriptionListenerRegistry.SubscriptionRegistryModel<?> subscriptionRegistryModel = subscriptionListenerRegistry.getSubscriptionListener(responseDto.getHeaders().get(Naming.SUBSCRIPTION_EVENT_HEADER_NAME));
             SubscriptionListener subscriptionListener = subscriptionRegistryModel.getSubscriptionListener();
-            subscriptionListener.onMessage(subscriptionRegistryModel.getSubscription(), messageConverter.readJsonNode(responseDto.getBody(), subscriptionListener.getListenerMessageBodyClassType()));
+            try {
+                subscriptionListener.onMessage(subscriptionRegistryModel.getSubscription(), messageConverter.readJsonNode(responseDto.getBody(), subscriptionListener.getListenerMessageBodyClassType()));
+            } catch (JsonProcessingException e) {
+                throw new MessageDataProcessingException(e);
+            }
             return false;
         }
         return true;

@@ -1,5 +1,7 @@
 package lab.idioglossia.row.client.pipeline;
 
+import lab.idioglossia.row.client.exception.MessageDataProcessingException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class StoppablePipeline<I, O> {
         return this;
     }
 
-    public void execute(I input, O output){
+    public void execute(I input, O output) throws MessageDataProcessingException {
         assert stages.size() > 0;
         int i = 0;
         while (i < stages.size() && stages.get(i).process(input, output)){
@@ -29,6 +31,6 @@ public class StoppablePipeline<I, O> {
     }
 
     public interface Stage<I, O> {
-        boolean process(I input, O output);
+        boolean process(I input, O output) throws MessageDataProcessingException;
     }
 }
