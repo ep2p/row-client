@@ -7,6 +7,7 @@ import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
+import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 
 public class PipelineFactory {
@@ -22,8 +23,9 @@ public class PipelineFactory {
             GeneralCallback<?> generalCallback
     ){
         StoppablePipeline<MessageHandlerInput, Void> pipeline = new StoppablePipeline<>();
+        MessageConverter messageConverter = new MessageConverter();
         return pipeline.addStage(new ConvertToResponseDtoHandler(new ObjectMapper()))
-                .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository))
+                .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository, messageConverter))
                 .addStage(new PublisherHandler(subscriptionListenerRegistry, messageConverter))
                 .addStage(new GeneralCallbackHandler(generalCallback));
     }

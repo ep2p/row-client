@@ -24,10 +24,10 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
     private final MessageConverter messageConverter;
 
-    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository) {
+    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository, MessageConverter messageConverter) {
         this.callbackRegistry = callbackRegistry;
         this.connectionRepository = connectionRepository;
-        messageConverter = new MessageConverter();
+        this.messageConverter = messageConverter;
     }
 
     @Override
