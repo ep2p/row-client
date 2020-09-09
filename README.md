@@ -24,7 +24,7 @@ Then add the dependency:
 <dependency>
     <groupId>com.github.idioglossia</groupId>
 	<artifactId>java-row-client</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
 </dependency>
 ```
 
