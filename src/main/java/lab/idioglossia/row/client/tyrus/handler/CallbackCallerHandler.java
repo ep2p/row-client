@@ -23,6 +23,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     private final CallbackRegistry callbackRegistry;
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
     private final MessageConverter messageConverter;
+    private final ResponseCallback.API responseCallbackApi = new ResponseCallback.API();
 
     public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository, MessageConverter messageConverter) {
         this.callbackRegistry = callbackRegistry;
@@ -44,7 +45,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         ResponseCallback<?> callback = callbackRegistry.getCallback(input.getResponseDto().getRequestId());
         try {
             RowResponse rowResponse = getRowResponse(input, callback.getResponseBodyClass());
-            rowResponse.setSubscription(getSubscription(input.getResponseDto(), new ResponseCallback.API().getRequest(callback)));
+            rowResponse.setSubscription(getSubscription(input.getResponseDto(), responseCallbackApi.getRequest(callback)));
             callback.onResponse(rowResponse);
         } catch (ResponseException e) {
             callback.onError(e);

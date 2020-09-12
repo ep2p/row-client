@@ -17,6 +17,7 @@ public class RequestSender {
     private final CallbackRegistry callbackRegistry;
     private final SubscriptionListenerRegistry subscriptionListenerRegistry;
     private final MessageConverter messageConverter;
+    private final ResponseCallback.API responseCallbackApi = new ResponseCallback.API();
 
     public RequestSender(ConnectionRepository<RowWebsocketSession> connectionRepository, MessageIdGenerator messageIdGenerator, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry) {
         this.connectionRepository = connectionRepository;
@@ -27,11 +28,12 @@ public class RequestSender {
     }
 
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
-        new ResponseCallback.API().setRequest(callback, rowRequest);
+        responseCallbackApi.setRequest(callback, rowRequest);
         sendMessage(rowRequest, callback);
     }
 
     public <E> void sendSubscribe(RowRequest<?, ?> rowRequest, final ResponseCallback<E> callback, final SubscriptionListener<?> subscriptionListener) throws IOException {
+        responseCallbackApi.setRequest(callback, rowRequest);
         sendMessage(rowRequest, new RegistryResponseCallbackDecorator<E>(callback, subscriptionListenerRegistry, subscriptionListener));
     }
 
