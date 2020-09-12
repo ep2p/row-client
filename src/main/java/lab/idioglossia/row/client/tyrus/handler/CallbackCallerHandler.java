@@ -17,6 +17,7 @@ import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
@@ -88,22 +89,22 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
             this.subscriptionId = subscriptionId;
             this.subscriptionEventName = subscriptionEventName;
             this.rowRequest = rowRequest.clone();
-            addUnsubscribeHeader(this.rowRequest);
+            addUnsubscribeHeader(this.rowRequest, subscriptionId);
         }
 
         @Override
         @SneakyThrows
-        public void close(RowRequest<?, ?> rowRequest) {
+        public void close(RowRequest<?, ?> rowRequest, ResponseCallback<?> responseCallback) {
             this.rowRequest.getHeaders().putAll(rowRequest.getHeaders());
             this.rowRequest.setBody(rowRequest.getBody());
             this.rowRequest.setQuery(rowRequest.getQuery());
-            connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(String.valueOf(new Random().nextInt(100)), this.rowRequest));
+            sendRequest(this.rowRequest, responseCallback);
         }
 
         @Override
         @SneakyThrows
-        public void close() {
-            connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(String.valueOf(new Random().nextInt(100)), rowRequest));
+        public void close(ResponseCallback<?> responseCallback) {
+            sendRequest(this.rowRequest, responseCallback);
         }
 
         @Override
@@ -125,7 +126,17 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         }
     }
 
-    private void addUnsubscribeHeader(RowRequest rowRequest){
+    @SneakyThrows
+    private void sendRequest(RowRequest rowRequest, ResponseCallback<?> responseCallback){
+        String id = String.valueOf(new Random().nextInt(100));
+        callbackRegistry.registerCallback(id, responseCallback);
+        connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(id, rowRequest));
+    }
+
+    private void addUnsubscribeHeader(RowRequest rowRequest, String subscriptionId){
+        if(rowRequest.getHeaders() == null)
+            rowRequest.setHeaders(new HashMap<>());
         rowRequest.getHeaders().put(Naming.UNSUBSCRIBE_HEADER_NAME, "1");
+        rowRequest.getHeaders().put(Naming.SUBSCRIPTION_Id_HEADER_NAME, subscriptionId);
     }
 }

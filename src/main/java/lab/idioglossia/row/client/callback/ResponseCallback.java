@@ -15,11 +15,11 @@ public abstract class ResponseCallback<E> {
         return this.eClass;
     }
 
-    private RowRequest getRowRequest() {
+    protected RowRequest getRowRequest() {
         return rowRequest;
     }
 
-    private void setRowRequest(RowRequest rowRequest) {
+    protected void setRowRequest(RowRequest rowRequest) {
         this.rowRequest = rowRequest;
     }
 
