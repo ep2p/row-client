@@ -44,7 +44,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         ResponseCallback<?> callback = callbackRegistry.getCallback(input.getResponseDto().getRequestId());
         try {
             RowResponse rowResponse = getRowResponse(input, callback.getResponseBodyClass());
-            rowResponse.setSubscription(getSubscription(input.getResponseDto()));
+            rowResponse.setSubscription(getSubscription(input.getResponseDto(), new ResponseCallback.API().getRequest(callback)));
             callback.onResponse(rowResponse);
         } catch (ResponseException e) {
             callback.onError(e);
@@ -69,11 +69,11 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         throw new ResponseException(responseDto.getStatus(), input.getJson());
     }
 
-    private Subscription getSubscription(ResponseDto responseDto){
+    private Subscription getSubscription(ResponseDto responseDto, RowRequest request){
         String subscriptionEventName = responseDto.getHeaders().get(Naming.SUBSCRIPTION_EVENT_HEADER_NAME);
         String subscriptionId = responseDto.getHeaders().get(Naming.SUBSCRIPTION_Id_HEADER_NAME);
         if(subscriptionEventName != null && subscriptionId != null)
-            return new RowSubscription(subscriptionId, subscriptionEventName);
+            return new RowSubscription(subscriptionId, subscriptionEventName, request);
 
         return null;
     }
@@ -81,15 +81,27 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     private class RowSubscription implements Subscription {
         private final String subscriptionId;
         private final String subscriptionEventName;
+        private final RowRequest rowRequest;
 
-        private RowSubscription(String subscriptionId, String subscriptionEventName) {
+        private RowSubscription(String subscriptionId, String subscriptionEventName, RowRequest rowRequest) {
             this.subscriptionId = subscriptionId;
             this.subscriptionEventName = subscriptionEventName;
+            this.rowRequest = rowRequest.clone();
+            addUnsubscribeHeader(this.rowRequest);
         }
 
         @Override
         @SneakyThrows
         public void close(RowRequest<?, ?> rowRequest) {
+            this.rowRequest.getHeaders().putAll(rowRequest.getHeaders());
+            this.rowRequest.setBody(rowRequest.getBody());
+            this.rowRequest.setQuery(rowRequest.getQuery());
+            connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(String.valueOf(new Random().nextInt(100)), this.rowRequest));
+        }
+
+        @Override
+        @SneakyThrows
+        public void close() {
             connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(String.valueOf(new Random().nextInt(100)), rowRequest));
         }
 
@@ -110,5 +122,9 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
                     ", subscriptionEventName='" + subscriptionEventName + '\'' +
                     '}';
         }
+    }
+
+    private void addUnsubscribeHeader(RowRequest rowRequest){
+        rowRequest.getHeaders().put(Naming.UNSUBSCRIBE_HEADER_NAME, "1");
     }
 }

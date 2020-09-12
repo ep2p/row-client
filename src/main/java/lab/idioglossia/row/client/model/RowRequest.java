@@ -2,6 +2,7 @@ package lab.idioglossia.row.client.model;
 
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -13,7 +14,17 @@ public class RowRequest<B,Q> {
     private String address;
     private Q query;
     private B body;
-    private Map<String, String> headers;
+    private Map<String, String> headers = new HashMap<>();
+
+    public RowRequest<B,Q> clone(){
+        return new RowRequestBuilder<B,Q>()
+                .body(this.body)
+                .query(this.query)
+                .address(this.address)
+                .headers(this.headers)
+                .method(this.method)
+                .build();
+    }
 
     @Getter
     public enum RowMethod {

@@ -27,6 +27,7 @@ public class RequestSender {
     }
 
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {
+        new ResponseCallback.API().setRequest(callback, rowRequest);
         sendMessage(rowRequest, callback);
     }
 
