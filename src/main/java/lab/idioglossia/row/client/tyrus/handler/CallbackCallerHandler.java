@@ -13,7 +13,7 @@ import lab.idioglossia.row.client.model.protocol.RowResponseStatus;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
-import lab.idioglossia.row.client.util.MessageConverter;
+import lab.idioglossia.row.client.util.DefaultJacksonMessageConverter;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
@@ -23,13 +23,13 @@ import java.util.Random;
 public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final CallbackRegistry callbackRegistry;
     private final ConnectionRepository<RowWebsocketSession> connectionRepository;
-    private final MessageConverter messageConverter;
+    private final DefaultJacksonMessageConverter defaultJacksonMessageConverter;
     private final ResponseCallback.API responseCallbackApi = new ResponseCallback.API();
 
-    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository, MessageConverter messageConverter) {
+    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository, DefaultJacksonMessageConverter defaultJacksonMessageConverter) {
         this.callbackRegistry = callbackRegistry;
         this.connectionRepository = connectionRepository;
-        this.messageConverter = messageConverter;
+        this.defaultJacksonMessageConverter = defaultJacksonMessageConverter;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
         if (responseDto.getStatus() == RowResponseStatus.OK.getId()) {
             RowResponse rowResponse = new RowResponse();
             try {
-                rowResponse.setBody(messageConverter.readJsonNode(responseDto.getBody(), responseBodyClassType));
+                rowResponse.setBody(defaultJacksonMessageConverter.readJsonNode(responseDto.getBody(), responseBodyClassType));
             } catch (JsonProcessingException e) {
                 throw new MessageDataProcessingException(e);
             }
@@ -130,7 +130,7 @@ public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHan
     private void sendRequest(RowRequest rowRequest, ResponseCallback<?> responseCallback){
         String id = String.valueOf(new Random().nextInt(100));
         callbackRegistry.registerCallback(id, responseCallback);
-        connectionRepository.getConnection().sendTextMessage(messageConverter.getJson(id, rowRequest));
+        connectionRepository.getConnection().sendTextMessage(defaultJacksonMessageConverter.getJson(id, rowRequest));
     }
 
     private void addUnsubscribeHeader(RowRequest rowRequest, String subscriptionId){

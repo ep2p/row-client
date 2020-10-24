@@ -7,6 +7,8 @@ import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.MapCallbackRegistry;
 import lab.idioglossia.row.client.registry.MapSubscriptionListenerRegistry;
 import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
+import lab.idioglossia.row.client.util.DefaultJacksonMessageConverter;
+import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.WebsocketConfig;
@@ -39,4 +41,6 @@ public class RowClientConfig {
     private ExecutorService executorService;
     @Builder.Default
     private RowTransportListener rowTransportListener = new RowTransportListener.Default();
+    @Builder.Default
+    public MessageConverter messageConverter = new DefaultJacksonMessageConverter();
 }

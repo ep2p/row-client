@@ -19,12 +19,12 @@ public class RequestSender {
     private final MessageConverter messageConverter;
     private final ResponseCallback.API responseCallbackApi = new ResponseCallback.API();
 
-    public RequestSender(ConnectionRepository<RowWebsocketSession> connectionRepository, MessageIdGenerator messageIdGenerator, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry) {
+    public RequestSender(ConnectionRepository<RowWebsocketSession> connectionRepository, MessageIdGenerator messageIdGenerator, CallbackRegistry callbackRegistry, SubscriptionListenerRegistry subscriptionListenerRegistry, MessageConverter messageConverter) {
         this.connectionRepository = connectionRepository;
         this.messageIdGenerator = messageIdGenerator;
         this.callbackRegistry = callbackRegistry;
         this.subscriptionListenerRegistry = subscriptionListenerRegistry;
-        this.messageConverter = new MessageConverter();
+        this.messageConverter = messageConverter;
     }
 
     public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> callback) throws IOException {

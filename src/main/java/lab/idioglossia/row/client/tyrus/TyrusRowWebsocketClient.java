@@ -29,7 +29,7 @@ public class TyrusRowWebsocketClient implements RowClient {
     private volatile RowWebsocketSession webSocketSession;
 
     public TyrusRowWebsocketClient(RowClientConfig rowClientConfig) {
-        this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry());
+        this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
         this.rowClientConfig = rowClientConfig;
     }
 
