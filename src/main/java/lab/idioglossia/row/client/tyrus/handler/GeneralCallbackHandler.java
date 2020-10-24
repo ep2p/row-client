@@ -1,8 +1,8 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
-import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.model.protocol.ResponseDto;
+import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 
 public class GeneralCallbackHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final GeneralCallback<?> generalCallback;

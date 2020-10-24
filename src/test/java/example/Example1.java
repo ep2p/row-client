@@ -4,7 +4,6 @@ import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
-import lab.idioglossia.row.client.model.PublishedMessage;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;

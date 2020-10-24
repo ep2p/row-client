@@ -1,8 +1,8 @@
 package lab.idioglossia.row.client;
 
 import lab.idioglossia.row.client.callback.ResponseCallback;
-import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
+import lab.idioglossia.row.client.model.RowRequest;
 
 import java.io.IOException;
 

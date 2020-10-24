@@ -1,32 +1,37 @@
 package lab.idioglossia.row.client.tyrus.handler;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.util.DefaultJacksonMessageConverter;
+import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 
 public class PipelineFactory {
 
     public static StoppablePipeline<MessageHandlerInput, Void> getPipeline(RowClientConfig rowClientConfig){
-        return getPipeline(rowClientConfig.getCallbackRegistry(), rowClientConfig.getConnectionRepository(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getGeneralCallback());
+        return getPipeline(rowClientConfig.getCallbackRegistry(), rowClientConfig.getConnectionRepository(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getGeneralCallback(), rowClientConfig.getMessageConverter());
     }
 
     public static StoppablePipeline<MessageHandlerInput, Void> getPipeline(
             CallbackRegistry callbackRegistry,
             ConnectionRepository<RowWebsocketSession> connectionRepository,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
-            GeneralCallback<?> generalCallback
+            GeneralCallback<?> generalCallback,
+            MessageConverter messageConverter
     ){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         StoppablePipeline<MessageHandlerInput, Void> pipeline = new StoppablePipeline<>();
-        DefaultJacksonMessageConverter defaultJacksonMessageConverter = new DefaultJacksonMessageConverter();
-        return pipeline.addStage(new ConvertToResponseDtoHandler(new ObjectMapper()))
-                .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository, defaultJacksonMessageConverter))
-                .addStage(new PublisherHandler(subscriptionListenerRegistry, defaultJacksonMessageConverter))
+        return pipeline.addStage(new ConvertToResponseDtoHandler(objectMapper))
+                .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository, messageConverter))
+                .addStage(new PublisherHandler(subscriptionListenerRegistry, messageConverter))
                 .addStage(new GeneralCallbackHandler(generalCallback));
     }
 
