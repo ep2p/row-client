@@ -33,7 +33,7 @@ Then add the dependency:
 Create RowClient using `RowWebsocketClient` and pass configuration object.
 
 ```
-RowClient rowClient = new RowWebsocketClient(RowClientConfig.builder()
+RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.builder()
     .address("ws://localhost:8080/ws")
     .build());
 ```
