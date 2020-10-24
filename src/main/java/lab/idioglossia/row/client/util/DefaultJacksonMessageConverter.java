@@ -14,6 +14,10 @@ public class DefaultJacksonMessageConverter implements MessageConverter{
         objectMapper = new ObjectMapper();
     }
 
+    public DefaultJacksonMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     @SneakyThrows
     public String getJson(String messageId, RowRequest<?, ?> rowRequest) {
         RequestDto requestDto = RequestDto.builder()
