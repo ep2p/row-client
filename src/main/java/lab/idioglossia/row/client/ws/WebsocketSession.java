@@ -4,7 +4,7 @@ import javax.websocket.CloseReason;
 import java.net.URI;
 import java.nio.ByteBuffer;
 
-interface WebsocketSession {
+public interface WebsocketSession {
     URI getUri();
     void close(CloseReason closeReason) throws Exception;
     boolean isOpen();

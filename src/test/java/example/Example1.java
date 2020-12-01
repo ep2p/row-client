@@ -9,6 +9,7 @@ import lab.idioglossia.row.client.model.RowResponse;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
+import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class Example1 {
     @SneakyThrows
     public static void main(String[] args) {
-        RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.builder()
+        RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.<RowWebsocketSession>builder()
                 .address("ws://localhost:8080/ws")
                 .handshakeHeadersProvider(new HandshakeHeadersProvider() {
                     @Override

@@ -1,7 +1,7 @@
 package lab.idioglossia.row.client.ws;
 
 import lombok.*;
-import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+import org.glassfish.tyrus.client.SslEngineConfigurator;
 
 @Builder
 @Data
@@ -17,5 +17,5 @@ public class WebsocketConfig {
     private int maxBinaryMessageBufferSize = 8192 * 1000;
     @Builder.Default
     private int maxTextMessageBufferSize = 8192 * 1000;
-    private SSLEngineConfigurator sslEngineConfigurator;
+    private SslEngineConfigurator sslEngineConfigurator;
 }

@@ -3,7 +3,6 @@ package lab.idioglossia.row.client;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.model.RowRequest;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 public class HttpFallbackRowClientDecorator extends RowClientDecorator {
@@ -24,7 +23,6 @@ public class HttpFallbackRowClientDecorator extends RowClientDecorator {
     }
 
     @Override
-    @PostConstruct
     public void open() {
         super.open();
     }

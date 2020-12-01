@@ -11,7 +11,6 @@ import lab.idioglossia.row.client.ws.RowWebsocketHandlerAdapter;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
-import javax.annotation.PostConstruct;
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.Endpoint;
 import javax.websocket.Extension;
@@ -25,10 +24,10 @@ import static lab.idioglossia.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME
 
 public class TyrusRowWebsocketClient implements RowClient {
     private final RequestSender requestSender;
-    private final RowClientConfig rowClientConfig;
+    private final RowClientConfig<RowWebsocketSession> rowClientConfig;
     private volatile RowWebsocketSession webSocketSession;
 
-    public TyrusRowWebsocketClient(RowClientConfig rowClientConfig) {
+    public TyrusRowWebsocketClient(RowClientConfig<RowWebsocketSession> rowClientConfig) {
         this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
         this.rowClientConfig = rowClientConfig;
     }
@@ -42,7 +41,6 @@ public class TyrusRowWebsocketClient implements RowClient {
     }
 
     @SneakyThrows
-    @PostConstruct
     public void open() {
         WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowClientConfig.getWebsocketConfig());
         URI uri = URI.create(rowClientConfig.getAddress());
