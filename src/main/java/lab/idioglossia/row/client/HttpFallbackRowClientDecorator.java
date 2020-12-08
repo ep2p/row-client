@@ -42,6 +42,11 @@ public class HttpFallbackRowClientDecorator extends RowClientDecorator {
             super.open();
         }catch (Exception e){
             switched = true;
+            throw e;
         }
+    }
+
+    public boolean isSwitched() {
+        return switched;
     }
 }
