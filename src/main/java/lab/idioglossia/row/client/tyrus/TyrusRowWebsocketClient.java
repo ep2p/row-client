@@ -4,7 +4,7 @@ import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
 import lab.idioglossia.row.client.model.RowRequest;
-import lab.idioglossia.row.client.tyrus.handler.PipelineFactory;
+import lab.idioglossia.row.client.ws.handler.PipelineFactory;
 import lab.idioglossia.row.client.ws.ContainerFactory;
 import lab.idioglossia.row.client.ws.RowClientEndpointConfig;
 import lab.idioglossia.row.client.ws.RowWebsocketHandlerAdapter;

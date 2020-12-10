@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.tyrus.handler;
+package lab.idioglossia.row.client.ws.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +18,8 @@ public class ConvertToResponseDtoHandler implements StoppablePipeline.Stage<Mess
         ResponseDto responseDto = null;
         try {
             responseDto = objectMapper.readValue(input.getJson(), ResponseDto.class);
+            if(!responseDto.getType().equals("response"))
+                return false;
             input.setResponseDto(responseDto);
             return true;
         } catch (JsonProcessingException e) {

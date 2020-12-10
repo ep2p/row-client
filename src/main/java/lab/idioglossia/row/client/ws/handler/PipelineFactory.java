@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.tyrus.handler;
+package lab.idioglossia.row.client.ws.handler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

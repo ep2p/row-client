@@ -6,7 +6,7 @@
 
     <groupId>labs.psychogen.row</groupId>
     <artifactId>java-row-client</artifactId>
-    <version>1.2.0-RELEASE</version>
+    <version>1.2.1-RELEASE</version>
     <description>Java Client for Rest Over Websocket</description>
 
     <developers>

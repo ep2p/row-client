@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.tyrus.handler;
+package lab.idioglossia.row.client.ws.handler;
 
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
