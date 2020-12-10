@@ -6,29 +6,29 @@ import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.tyrus.handler.MessageHandlerInput;
 import lab.idioglossia.row.client.ws.MessageHandler;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 
 import javax.websocket.CloseReason;
 
-public class RowMessageHandler implements MessageHandler {
+public class RowMessageHandler<S extends WebsocketSession> implements MessageHandler<S> {
     private final StoppablePipeline<MessageHandlerInput, Void> pipeline;
-    private final ConnectionRepository<RowWebsocketSession> connectionRepository;
-    private final RowTransportListener rowTransportListener;
+    private final ConnectionRepository<S> connectionRepository;
+    private final RowTransportListener<S> rowTransportListener;
     private final RowClient rowClient;
 
-    public RowMessageHandler(StoppablePipeline<MessageHandlerInput, Void> pipeline, ConnectionRepository<RowWebsocketSession> connectionRepository, RowTransportListener rowTransportListener, RowClient rowClient) {
+    public RowMessageHandler(StoppablePipeline<MessageHandlerInput, Void> pipeline, ConnectionRepository<S> connectionRepository, RowTransportListener<S> rowTransportListener, RowClient rowClient) {
         this.pipeline = pipeline;
         this.connectionRepository = connectionRepository;
         this.rowTransportListener = rowTransportListener;
         this.rowClient = rowClient;
     }
 
-    public void onOpen(RowWebsocketSession rowWebsocketSession) {
+    public void onOpen(S rowWebsocketSession) {
         connectionRepository.setConnection(rowWebsocketSession);
         rowTransportListener.onOpen(rowWebsocketSession);
     }
 
-    public void onMessage(RowWebsocketSession rowWebsocketSession, String text) {
+    public void onMessage(S rowWebsocketSession, String text) {
         try {
             pipeline.execute(new MessageHandlerInput(text), null);
         } catch (MessageDataProcessingException e) {
@@ -36,11 +36,11 @@ public class RowMessageHandler implements MessageHandler {
         }
     }
 
-    public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {
+    public void onError(S rowWebsocketSession, Throwable throwable) {
         rowTransportListener.onError(rowWebsocketSession, throwable);
     }
 
-    public void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
+    public void onClose(S rowWebsocketSession, CloseReason closeReason) {
         rowTransportListener.onClose(this.rowClient, rowWebsocketSession, closeReason);
     }
 }

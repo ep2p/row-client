@@ -1,10 +1,12 @@
 package lab.idioglossia.row.client.tyrus;
 
-public interface ConnectionRepository<C> {
+import lab.idioglossia.row.client.ws.WebsocketSession;
+
+public interface ConnectionRepository<C extends WebsocketSession> {
     C getConnection();
     void setConnection(C connection);
 
-    class DefaultConnectionRepository<C> implements ConnectionRepository<C> {
+    class DefaultConnectionRepository<C extends WebsocketSession> implements ConnectionRepository<C> {
         private volatile C connection;
 
         @Override

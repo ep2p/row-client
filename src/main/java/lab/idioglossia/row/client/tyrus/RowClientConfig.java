@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 
 @Data
 @Builder
-public class RowClientConfig<E extends WebsocketSession> {
+public class RowClientConfig<S extends WebsocketSession> {
     @Builder.Default
     private WebsocketConfig websocketConfig = new WebsocketConfig();
     private String address;
@@ -36,11 +36,11 @@ public class RowClientConfig<E extends WebsocketSession> {
     @Builder.Default
     private Map<String, Object> attributes = new HashMap<String, Object>();
     @Builder.Default
-    private ConnectionRepository<E> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
+    private ConnectionRepository<S> connectionRepository = new ConnectionRepository.DefaultConnectionRepository<>();
     private GeneralCallback<?> generalCallback;
     private ExecutorService executorService;
     @Builder.Default
-    private RowTransportListener rowTransportListener = new RowTransportListener.Default();
+    private RowTransportListener<S> rowTransportListener = new RowTransportListener.Default();
     @Builder.Default
     public MessageConverter messageConverter = new DefaultJacksonMessageConverter();
 }

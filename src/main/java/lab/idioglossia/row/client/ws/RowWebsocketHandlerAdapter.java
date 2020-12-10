@@ -5,9 +5,9 @@ import java.nio.ByteBuffer;
 
 public class RowWebsocketHandlerAdapter extends Endpoint {
     private final RowWebsocketSession rowWebsocketSession;
-    private final MessageHandler messageHandler;
+    private final MessageHandler<RowWebsocketSession> messageHandler;
 
-    public RowWebsocketHandlerAdapter(RowWebsocketSession rowWebsocketSession, MessageHandler messageHandler) {
+    public RowWebsocketHandlerAdapter(RowWebsocketSession rowWebsocketSession, MessageHandler<RowWebsocketSession> messageHandler) {
         this.rowWebsocketSession = rowWebsocketSession;
         this.messageHandler = messageHandler;
     }

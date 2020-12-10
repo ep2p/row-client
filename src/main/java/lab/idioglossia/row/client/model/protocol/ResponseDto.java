@@ -17,7 +17,8 @@ public class ResponseDto {
     private JsonNode body;
     private int status;
     private Map<String, String> headers;
-
+    @Builder.Default
+    private String type = "response";
     public Map<String, String> getHeaders() {
         return headers == null ? new HashMap<>() : headers;
     }

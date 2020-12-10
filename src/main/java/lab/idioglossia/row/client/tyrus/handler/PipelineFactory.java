@@ -10,17 +10,17 @@ import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.util.MessageConverter;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 
 public class PipelineFactory {
 
-    public static StoppablePipeline<MessageHandlerInput, Void> getPipeline(RowClientConfig rowClientConfig){
+    public static <S extends WebsocketSession> StoppablePipeline<MessageHandlerInput, Void> getPipeline(RowClientConfig<S> rowClientConfig){
         return getPipeline(rowClientConfig.getCallbackRegistry(), rowClientConfig.getConnectionRepository(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getGeneralCallback(), rowClientConfig.getMessageConverter());
     }
 
-    public static StoppablePipeline<MessageHandlerInput, Void> getPipeline(
+    public static <S extends WebsocketSession> StoppablePipeline<MessageHandlerInput, Void> getPipeline(
             CallbackRegistry callbackRegistry,
-            ConnectionRepository<RowWebsocketSession> connectionRepository,
+            ConnectionRepository<S> connectionRepository,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
             GeneralCallback<?> generalCallback,
             MessageConverter messageConverter

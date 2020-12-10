@@ -45,8 +45,9 @@ public class TyrusRowWebsocketClient implements RowClient {
         WebSocketContainer webSocketContainer = ContainerFactory.getWebSocketContainer(rowClientConfig.getWebsocketConfig());
         URI uri = URI.create(rowClientConfig.getAddress());
         ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create().configurator(new RowClientEndpointConfig(rowClientConfig.getHandshakeHeadersProvider().getHeaders())).preferredSubprotocols(Collections.singletonList(ROW_PROTOCOL_NAME)).extensions(Collections.<Extension>emptyList()).build();
-        RowMessageHandler rowMessageHandler = new RowMessageHandler(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository(), rowClientConfig.getRowTransportListener(), this);
-        Endpoint endpoint = new RowWebsocketHandlerAdapter(new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig()), rowMessageHandler);
+        RowMessageHandler<RowWebsocketSession> rowMessageHandler = new RowMessageHandler<RowWebsocketSession>(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository(), rowClientConfig.getRowTransportListener(), this);
+        this.webSocketSession = new RowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig());
+        Endpoint endpoint = new RowWebsocketHandlerAdapter(this.webSocketSession, rowMessageHandler);
         Callable<Void> callableContainer = getCallableContainer(webSocketContainer, uri, clientEndpointConfig, endpoint);
         if(this.rowClientConfig.getExecutorService() != null){
             this.rowClientConfig.getExecutorService().submit(callableContainer);

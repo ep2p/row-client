@@ -20,4 +20,6 @@ public class RequestDto {
     private Map<String, String> headers;
     @Builder.Default
     private Double version = 1.0;
+    @Builder.Default
+    private String type = "request";
 }

@@ -3,10 +3,10 @@ package lab.idioglossia.row.client.ws;
 import javax.websocket.CloseReason;
 import java.nio.ByteBuffer;
 
-public interface MessageHandler {
-    void onOpen(RowWebsocketSession rowWebsocketSession);
-    void onMessage(RowWebsocketSession rowWebsocketSession, String text);
-    void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable);
-    void onClose(RowWebsocketSession rowWebsocketSession, CloseReason closeReason);
-    default void onPong(RowWebsocketSession rowWebsocketSession, ByteBuffer payload){}
+public interface MessageHandler<S extends WebsocketSession> {
+    void onOpen(S session);
+    void onMessage(S session, String text);
+    void onError(S session, Throwable throwable);
+    void onClose(S session, CloseReason closeReason);
+    default void onPong(S session, ByteBuffer payload){}
 }

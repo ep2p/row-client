@@ -13,19 +13,19 @@ import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.util.MessageConverter;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
 import java.util.Random;
 
-public class CallbackCallerHandler implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
+public class CallbackCallerHandler<S extends WebsocketSession> implements StoppablePipeline.Stage<MessageHandlerInput, Void> {
     private final CallbackRegistry callbackRegistry;
-    private final ConnectionRepository<RowWebsocketSession> connectionRepository;
+    private final ConnectionRepository<S> connectionRepository;
     private final MessageConverter messageConverter;
     private final ResponseCallback.API responseCallbackApi = new ResponseCallback.API();
 
-    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<RowWebsocketSession> connectionRepository, MessageConverter messageConverter) {
+    public CallbackCallerHandler(CallbackRegistry callbackRegistry, ConnectionRepository<S> connectionRepository, MessageConverter messageConverter) {
         this.callbackRegistry = callbackRegistry;
         this.connectionRepository = connectionRepository;
         this.messageConverter = messageConverter;
