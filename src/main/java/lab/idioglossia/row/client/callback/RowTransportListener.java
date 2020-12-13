@@ -10,7 +10,7 @@ public interface RowTransportListener<S extends WebsocketSession> {
     void onError(S rowWebsocketSession, Throwable throwable);
     void onClose(RowClient rowClient, S rowWebsocketSession, CloseReason closeReason);
 
-    class Default implements RowTransportListener {
+    class Default<S extends WebsocketSession> implements RowTransportListener<S> {
         @Override
         public void onOpen(WebsocketSession rowWebsocketSession) {
 

@@ -1,6 +1,7 @@
 package lab.idioglossia.row.client.tyrus;
 
 import lab.idioglossia.row.client.MessageIdGenerator;
+import lab.idioglossia.row.client.RowMessageHandlerProvider;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.callback.RowTransportListener;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
@@ -40,7 +41,9 @@ public class RowClientConfig<S extends WebsocketSession> {
     private GeneralCallback<?> generalCallback;
     private ExecutorService executorService;
     @Builder.Default
-    private RowTransportListener<S> rowTransportListener = new RowTransportListener.Default();
+    private RowTransportListener<S> rowTransportListener = new RowTransportListener.Default<S>();
     @Builder.Default
     public MessageConverter messageConverter = new DefaultJacksonMessageConverter();
+    @Builder.Default
+    public RowMessageHandlerProvider<S> rowMessageHandlerProvider = new RowMessageHandlerProvider.Default<S>();
 }

@@ -32,7 +32,7 @@ public class PipelineFactory {
         return pipeline.addStage(new ConvertToResponseDtoHandler(objectMapper))
                 .addStage(new CallbackCallerHandler(callbackRegistry, connectionRepository, messageConverter))
                 .addStage(new PublisherHandler(subscriptionListenerRegistry, messageConverter))
-                .addStage(new GeneralCallbackHandler(generalCallback));
+                .addStage(new GeneralCallbackHandler(objectMapper, generalCallback));
     }
 
 }

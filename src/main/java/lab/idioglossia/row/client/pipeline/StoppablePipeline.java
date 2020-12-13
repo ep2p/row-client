@@ -1,11 +1,13 @@
 package lab.idioglossia.row.client.pipeline;
 
 import lab.idioglossia.row.client.exception.MessageDataProcessingException;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoppablePipeline<I, O> {
+    @Getter
     private final List<Stage<I, O>> stages;
 
     public StoppablePipeline() {
