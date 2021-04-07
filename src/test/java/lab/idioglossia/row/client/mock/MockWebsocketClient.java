@@ -17,11 +17,10 @@ public class MockWebsocketClient implements RowClient {
     private final RowClientConfig<MockWebsocketSession> rowClientConfig;
     private MockWebsocketSession mockWebsocketSession;
 
-    public MockWebsocketClient(RowClientConfig<MockWebsocketSession> rowClientConfig, MockSession mockSession, MockWebsocketSession mockWebsocketSession) {
+    public MockWebsocketClient(RowClientConfig<MockWebsocketSession> rowClientConfig, MockSession mockSession) {
         this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
         this.rowClientConfig = rowClientConfig;
         this.mockSession = mockSession;
-        this.mockWebsocketSession = mockWebsocketSession;
     }
 
     @Override
