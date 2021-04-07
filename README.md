@@ -113,6 +113,6 @@ RowClient rowClient = new RowWebsocketClient(RowClientConfig.builder()
     .build());
 ```
 
-You can make changes to websocket configuration by passing `WebsocketConfig` to `RowClientConfig`. Also, its possible to alter `SSLEngineConfigurator`. Follow [this documentation](https://tyrus-project.github.io/documentation/1.13.1/user-guide.html#d0e1128).
+You can make changes to websocket configuration by passing `WebsocketConfig` to `RowClientConfig`. Also, its possible to alter `SSLEngineConfigurator`. Follow [this documentation](https://eclipse-ee4j.github.io/tyrus-project.github.io/documentation/latest/index/tyrus-proprietary-config.html#d0e1129).
 
 Then on server side the websocket can be validated.
