@@ -9,7 +9,7 @@ Java client for ROW (Rest Over Websocket)
 
 To client to your project first include jitpack repository:
 
-```
+```xml
 <repositories>
     <repository>
         <id>jitpack.io</id>
@@ -20,7 +20,7 @@ To client to your project first include jitpack repository:
 
 Then add the dependency:
 
-```
+```xml
 <dependency>
     <groupId>com.github.idioglossia</groupId>
 	<artifactId>java-row-client</artifactId>
@@ -32,7 +32,7 @@ Then add the dependency:
 
 Create RowClient using `RowWebsocketClient` and pass configuration object.
 
-```
+```java
 RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.builder()
     .address("ws://localhost:8080/ws")
     .build());
@@ -40,13 +40,13 @@ RowClient rowClient = new TyrusRowWebsocketClient(RowClientConfig.builder()
 
 Call `open()` method on client to start the connection:
 
-```
+```java
 rowClient.open();
 ```
 
 Create a request:
 
-```
+```java
 RowRequest<BODYTYPE, QUERYTYPE> request = RowRequest.<BODYTYPE, QUERYTYPE>builder()
             .address("/address")
             .method(RowRequest.RowMethod.GET)
@@ -58,7 +58,7 @@ RowRequest<BODYTYPE, QUERYTYPE> request = RowRequest.<BODYTYPE, QUERYTYPE>builde
 
 Send request and pass response handler:
 
-```
+```java
 rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
         @Override
         public void onResponse(RowResponse<BODYTYPE> rowResponse) {
@@ -74,7 +74,7 @@ rowClient.sendRequest(request, new ResponseCallback<SampleDto>() {
 
 If your request is subscribing to a channel, pass SubscriptionListener too:
 
-```
+```java
 rowClient.subscribe(request, new ResponseCallback<SampleDto>() {
         @Override
         public void onResponse(RowResponse<SampleDto> rowResponse) {
@@ -99,7 +99,7 @@ rowClient.subscribe(request, new ResponseCallback<SampleDto>() {
 
 Check `RowClientConfig` for more config parameters. For example you can pass handshake headers through configuration:
 
-```
+```java
 RowClient rowClient = new RowWebsocketClient(RowClientConfig.builder()
     .address("ws://localhost:8080/ws")
     .handshakeHeadersProvider(new HandshakeHeadersProvider() {
