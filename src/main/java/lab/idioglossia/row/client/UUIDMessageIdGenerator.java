@@ -1,6 +1,4 @@
-package lab.idioglossia.row.client.tyrus;
-
-import lab.idioglossia.row.client.MessageIdGenerator;
+package lab.idioglossia.row.client;
 
 import java.util.UUID;
 

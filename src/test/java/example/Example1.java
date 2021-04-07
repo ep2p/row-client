@@ -1,12 +1,12 @@
 package example;
 
 import lab.idioglossia.row.client.RowClient;
+import lab.idioglossia.row.client.RowClientConfig;
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;

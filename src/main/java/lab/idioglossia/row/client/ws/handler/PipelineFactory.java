@@ -3,12 +3,12 @@ package lab.idioglossia.row.client.ws.handler;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lab.idioglossia.row.client.ConnectionRepository;
+import lab.idioglossia.row.client.RowClientConfig;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
-import lab.idioglossia.row.client.tyrus.ConnectionRepository;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.WebsocketSession;
 

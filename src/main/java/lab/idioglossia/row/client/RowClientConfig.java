@@ -1,7 +1,5 @@
-package lab.idioglossia.row.client.tyrus;
+package lab.idioglossia.row.client;
 
-import lab.idioglossia.row.client.MessageIdGenerator;
-import lab.idioglossia.row.client.RowMessageHandlerProvider;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.callback.RowTransportListener;
 import lab.idioglossia.row.client.registry.CallbackRegistry;

@@ -1,7 +1,5 @@
 package lab.idioglossia.row.client;
 
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.tyrus.RowMessageHandler;
 import lab.idioglossia.row.client.ws.WebsocketSession;
 import lab.idioglossia.row.client.ws.handler.PipelineFactory;
 

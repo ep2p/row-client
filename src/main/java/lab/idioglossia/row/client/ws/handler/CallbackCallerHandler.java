@@ -1,5 +1,6 @@
 package lab.idioglossia.row.client.ws.handler;
 
+import lab.idioglossia.row.client.ConnectionRepository;
 import lab.idioglossia.row.client.Subscription;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.exception.MessageDataProcessingException;
@@ -11,7 +12,6 @@ import lab.idioglossia.row.client.model.protocol.ResponseDto;
 import lab.idioglossia.row.client.model.protocol.RowResponseStatus;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
-import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.WebsocketSession;
 import lombok.SneakyThrows;

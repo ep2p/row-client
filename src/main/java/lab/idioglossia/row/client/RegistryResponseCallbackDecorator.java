@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.tyrus;
+package lab.idioglossia.row.client;
 
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.ResponseCallbackDecorator;

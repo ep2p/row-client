@@ -1,12 +1,11 @@
-package lab.idioglossia.row.client.tyrus;
+package lab.idioglossia.row.client;
 
-import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.callback.RowTransportListener;
 import lab.idioglossia.row.client.exception.MessageDataProcessingException;
 import lab.idioglossia.row.client.pipeline.StoppablePipeline;
-import lab.idioglossia.row.client.ws.handler.MessageHandlerInput;
 import lab.idioglossia.row.client.ws.MessageHandler;
 import lab.idioglossia.row.client.ws.WebsocketSession;
+import lab.idioglossia.row.client.ws.handler.MessageHandlerInput;
 
 import javax.websocket.CloseReason;
 
