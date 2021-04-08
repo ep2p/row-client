@@ -7,7 +7,6 @@ public abstract class ResponseCallbackDecorator<E> extends ResponseCallback<E> {
     private final ResponseCallback<E> responseCallback;
 
     public ResponseCallbackDecorator(ResponseCallback<E> responseCallback) {
-        super(responseCallback.getResponseBodyClass());
         this.responseCallback = responseCallback;
     }
 

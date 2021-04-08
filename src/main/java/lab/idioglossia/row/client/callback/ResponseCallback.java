@@ -3,16 +3,14 @@ package lab.idioglossia.row.client.callback;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
 
+import java.lang.reflect.ParameterizedType;
+
 public abstract class ResponseCallback<E> {
-    private final Class<E> eClass;
     private RowRequest rowRequest;
 
-    public ResponseCallback(Class<E> responseBodyClass) {
-        this.eClass = responseBodyClass;
-    }
-
     public final Class<E> getResponseBodyClass(){
-        return this.eClass;
+        return  ((Class<E>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 
     protected RowRequest getRowRequest() {

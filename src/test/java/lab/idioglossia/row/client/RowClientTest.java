@@ -59,7 +59,7 @@ public class RowClientTest {
 
         AtomicReference<RowResponse<MockDto>> atomicReference = new AtomicReference<>();
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        rowClient.sendRequest(request, new ResponseCallback<MockDto>(MockDto.class) {
+        rowClient.sendRequest(request, new ResponseCallback<MockDto>() {
 
             @Override
             public void onResponse(RowResponse<MockDto> rowResponse) {
