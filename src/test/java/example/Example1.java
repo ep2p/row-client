@@ -114,7 +114,7 @@ public class Example1 {
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
             }
-        }, new SubscriptionListener<SampleDto>(SampleDto.class) {
+        }, new SubscriptionListener<SampleDto>() {
             @Override
             public void onMessage(Subscription subscription, SampleDto sampleDto) {
                 System.out.println(sampleDto);

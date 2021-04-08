@@ -2,16 +2,13 @@ package lab.idioglossia.row.client.callback;
 
 import lab.idioglossia.row.client.Subscription;
 
-public abstract class SubscriptionListener<E> {
-    private final Class<E> eClass;
+import java.lang.reflect.ParameterizedType;
 
-    protected SubscriptionListener(Class<E> listenerMessageBody) {
-        this.eClass = listenerMessageBody;
+public interface SubscriptionListener<E> {
+     default Class<E> getListenerMessageBodyClassType(){
+        return  ((Class<E>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 
-    public final Class<E> getListenerMessageBodyClassType(){
-        return this.eClass;
-    }
-
-    public abstract void onMessage(Subscription subscription, E message);
+    void onMessage(Subscription subscription, E message);
 }
