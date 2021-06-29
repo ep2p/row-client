@@ -7,26 +7,7 @@ Java client for ROW (Rest Over Websocket)
 
 ## Setup
 
-To client to your project first include jitpack repository:
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-Then add the dependency:
-
-```xml
-<dependency>
-    <groupId>com.github.idioglossia</groupId>
-	<artifactId>java-row-client</artifactId>
-    <version>2.0.0-RELEASE</version>
-</dependency>
-```
+todo
 
 ## Usage
 

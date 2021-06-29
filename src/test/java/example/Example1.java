@@ -1,15 +1,15 @@
 package example;
 
-import lab.idioglossia.row.client.RowClient;
-import lab.idioglossia.row.client.RowClientConfig;
-import lab.idioglossia.row.client.Subscription;
-import lab.idioglossia.row.client.callback.ResponseCallback;
-import lab.idioglossia.row.client.callback.SubscriptionListener;
-import lab.idioglossia.row.client.model.RowRequest;
-import lab.idioglossia.row.client.model.RowResponse;
-import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
-import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import io.ep2p.row.client.RowClient;
+import io.ep2p.row.client.RowClientConfig;
+import io.ep2p.row.client.Subscription;
+import io.ep2p.row.client.callback.ResponseCallback;
+import io.ep2p.row.client.callback.SubscriptionListener;
+import io.ep2p.row.client.model.RowRequest;
+import io.ep2p.row.client.model.RowResponse;
+import io.ep2p.row.client.tyrus.TyrusRowWebsocketClient;
+import io.ep2p.row.client.ws.HandshakeHeadersProvider;
+import io.ep2p.row.client.ws.RowWebsocketSession;
 import lombok.SneakyThrows;
 
 import java.util.Collections;
