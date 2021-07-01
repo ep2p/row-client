@@ -7,7 +7,10 @@
     <groupId>io.ep2p</groupId>
     <artifactId>row-client</artifactId>
     <version>2.0.0-RELEASE</version>
+    <name>Java ROW client</name>
     <description>Java Client for Rest Over Websocket</description>
+    <url>https://github.com/ep2p/row-client</url>
+    <packaging>jar</packaging>
 
     <licenses>
         <license>
